@@ -16,11 +16,11 @@
     ],
     
     "homepage": "https://uralweb.info/php/#classes",
-    "license": "Apache 2.0",
+    "license": "Apache-2.0",
     "require": {
         "php": ">=7.1.0"
         ,
-        "twig/twig": ">=2.10.0"
+        "twig/twig": "<3.0.0"
     }
     
 }
