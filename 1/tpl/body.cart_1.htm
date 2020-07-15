@@ -1,0 +1,307 @@
+{% spaceless %}
+
+    {#% include '/vendor/didrive_mod/shop_bu/1/tpl/body.item.htm' %#}
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-xs-12 col-lg-12">
+
+                <div id="content" class="col-sm-12">
+
+                    <h2 class="title">Корзина покупок</h2>
+
+
+                    {% if 1 == 2 %}
+                        post
+                        {{ pa(post,2) }}
+                        session
+                        {#{ pa(session.cart,2) }#}
+                        {{ pa(session,2) }}
+                    {% endif %}
+
+
+
+
+                    {# % if warn_order is defined and warn_order.length > 0 % #}
+                    {% if warn_order is defined %}
+
+                        <div class="bg-warning" style="padding: 10px 20px;">{{ warn_order }}</div>
+
+                    {% else %}
+
+                        <form action="" method="post" >
+
+
+
+                            {% set summa = 0 %}
+
+                            <div class="table-responsive form-group">
+                                <table class="table table-bordered">
+
+                                    <thead>
+                                        <tr>
+                                            {#
+                                            <td class="text-center"></td>
+                                            #}
+                                            <td class="text-left">Товар</td>
+                                            {#
+                                            <td class="text-left">Model</td>
+                                            #}
+                                            <td class="text-left">Кол-во</td>
+                                            <td class="text-right">Цена</td>
+                                            <td class="text-right">Сумма</td>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {%  for k,item in session.cart %}
+
+                                            {% include constant('dir_mods_mod_vers_tpl')~'body.cart.item.htm' %}
+
+                                            {% if item.price is defined and item.price > 0 and item.kolvo is defined and item.kolvo > 0 %}
+                                                {% set summa = summa + ( item.price * item.kolvo ) %}
+                                            {% endif %}
+
+                                        {% endfor %}
+
+                                        {#
+                                        <tr>
+                                            <td class="text-center"><a href="product.html"><img src="img/demo/shop/product/E1.jpg" alt="Xitefun Causal Wear Fancy Shoes" title="Xitefun Causal Wear Fancy Shoes" class="img-thumbnail" width="70px"></a></td>
+                                            <td class="text-left"><a href="product.html">Comas samer rumas</a></td>
+                                            <td class="text-left">Pt 002</td>
+                                            <td class="text-left" width="200px"><div class="input-group btn-block quantity">
+                                                    <input type="text" name="quantity" value="1" size="1" class="form-control">
+                                                    <span class="input-group-btn">
+                                                        <button type="submit" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Update"><i class="fa fa-clone" <="" i=""></i></button><i class="fa fa-clone" <="" i="">
+                                                                                                                                                                                                        <button type="button" data-toggle="tooltip" title="" class="btn btn-danger" onclick="" data-original-title="Remove"><i class="fa fa-times-circle"></i></button>
+                                                        </i></span></div></td>
+                                            <td class="text-right">$150.00</td>
+                                            <td class="text-right">$150.00</td>
+                                        </tr>
+                                        #}
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {% if 1 == 2 %}
+
+                                <h3 class="subtitle no-margin">What would you like to do next?</h3>
+                                <p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
+                                <div class="panel-group" id="accordion">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a href="#collapse-coupon" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" aria-expanded="true">Use Coupon Code 
+
+                                                    <i class="fa fa-caret-down"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapse-coupon" class="panel-collapse collapse in" aria-expanded="true">
+                                            <div class="panel-body">
+                                                <label class="col-sm-2 control-label" for="input-coupon">Enter your coupon here</label>
+                                                <div class="input-group">
+                                                    <input type="text" name="coupon" value="" placeholder="Enter your coupon here" id="input-coupon" class="form-control">
+                                                    <span class="input-group-btn"><input type="button" value="Apply Coupon" id="button-coupon" data-loading-text="Loading..." class="btn btn-primary"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a href="#collapse-shipping" class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" aria-expanded="false">Estimate Shipping &amp; Taxes 
+
+                                                    <i class="fa fa-caret-down"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapse-shipping" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <p>Enter your destination to get a shipping estimate.</p>
+                                                <div class="form-horizontal">
+                                                    <div class="form-group required">
+                                                        <label class="col-sm-2 control-label" for="input-country">Country</label>
+                                                        <div class="col-sm-10">
+                                                            <select name="country_id" id="input-country" class="form-control">
+                                                                <option value=""> --- Please Select --- </option>
+                                                                <option value="244">Aaland Islands</option>
+                                                                <option value="1">Afghanistan</option>
+                                                                <option value="2">Albania</option>
+                                                                <option value="3">Algeria</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group required">
+                                                        <label class="col-sm-2 control-label" for="input-zone">Region / State</label>
+                                                        <div class="col-sm-10">
+                                                            <select name="zone_id" id="input-zone" class="form-control">
+                                                                <option value=""> --- Please Select --- </option>
+                                                                <option value="3513">Aberdeen</option>
+                                                                <option value="3514">Aberdeenshire</option>
+                                                                <option value="3515">Anglesey</option>
+                                                                <option value="3516">Angus</option>
+                                                                <option value="3517">Argyll and Bute</option>
+                                                                <option value="3518">Bedfordshire</option>
+                                                                <option value="3519">Berkshire</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group required">
+                                                        <label class="col-sm-2 control-label" for="input-postcode">Post Code</label>
+                                                        <div class="col-sm-10"><input type="text" name="postcode" value="" placeholder="Post Code" id="input-postcode" class="form-control"></div>
+                                                    </div>
+                                                    <button type="button" id="button-quote" data-loading-text="Loading..." class="btn btn-primary">Get Quotes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h4 class="panel-title">
+                                                <a href="#collapse-voucher" data-toggle="collapse" data-parent="#accordion" class="accordion-toggle collapsed" aria-expanded="false">Use Gift Certificate 
+
+                                                    <i class="fa fa-caret-down"></i>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapse-voucher" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+                                            <div class="panel-body">
+                                                <label class="col-sm-2 control-label" for="input-voucher">Enter your gift certificate code here</label>
+                                                <div class="input-group">
+                                                    <input type="text" name="voucher" value="" placeholder="Enter your gift certificate code here" id="input-voucher" class="form-control">
+                                                    <span class="input-group-btn"><input type="submit" value="Apply Gift Certificate" id="button-voucher" data-loading-text="Loading..." class="btn btn-primary"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <div class="row">
+                                <div class="col-sm-4 col-sm-offset-8">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            {#
+                                            <tr>
+                                                <td class="text-right">
+                                                    <strong>Sub-Total:</strong>
+                                                </td>
+                                                <td class="text-right">$168.71</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right">
+                                                    <strong>Flat Shipping Rate:</strong>
+                                                </td>
+                                                <td class="text-right">$4.69</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right">
+                                                    <strong>Eco Tax (-2.00):</strong>
+                                                </td>
+                                                <td class="text-right">$5.62</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right">
+                                                    <strong>VAT (20%):</strong>
+                                                </td>
+                                                <td class="text-right">$34.68</td>
+                                            </tr>
+                                            #}
+                                            <tr>
+                                                <td class="text-right">
+                                                    <strong>Итого:</strong>
+                                                </td>
+                                                <td class="text-right"><span id="summa_all_show">{{ summa|number_format(2,'.','`') }}</span>&nbsp;₽</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-4 col-sm-offset-8">
+                                    <table class="table table-bordered">
+                                        <tbody>
+
+                                            <tr>
+                                                <td class="text-right">
+                                                    <strong>Имя отчество:</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <input type="text" required="required" 
+                                                           class="form-control"
+                                                           name="io" 
+                                                           value=""
+                                                           />
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="text-right">
+                                                    <strong>Телефон:</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <input type="text" required="required" 
+                                                           name="phone" 
+                                                           class="form-control"
+                                                           value=""
+                                                           />
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td class="text-left" colspan="2" >
+                                                    <input type="checkbox" required="required" 
+                                                           name="sogl" 
+                                                           xclass="form-control"
+                                                           value="da"
+                                                           xstyle="float:left; display: inline-block;"
+                                                           />
+                                                    Даю согласие на обработку персональных данных
+                                                </td>
+                                            </tr>
+
+                                            {#
+                                            <tr>
+                                                <td class="text-right">
+                                                    <strong>Возможна связь по:</strong>
+                                                </td>
+                                                <td class="text-right">
+                                                    <input type="radio" name="viber" value="y" /> Позвонить
+                                                    <input type="radio" name="viber" value="y" /> Viber
+                                                    <input type="radio" name="viber" value="y" /> WathsApp
+                                                </td>
+                                            </tr>
+                                            #}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="buttons">
+                                <div class="pull-left"><a href="/" class="btn btn-primary">Продолжить покупки</a></div>
+                                <div class="pull-right">
+                                    {# <a href="/show/order/" class="btn btn-primary">Заказать</a> #}
+                                    <button 
+                                        type="submit" 
+                                        class="btn btn-success"
+                                        >Отправить заказ</button>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endspaceless %}

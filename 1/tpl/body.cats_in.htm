@@ -1,0 +1,50 @@
+{% spaceless %}
+
+    {% set show1 = 0 %}
+    {% for k1, v1 in cats_all if v1['a_parentId'] == cats_now['a_id'] %}
+        {% set show1 = 1 %}
+    {% endfor %}
+
+    {% if show1 == 1 %}
+
+        <style>
+            .list_cats_in{
+                float: left;
+                margin: 15px 5px 15px 5px;
+                xbackground-color: #ffcc66;
+                border: 1px sandybrown dashed;
+                width: 30%;
+            }
+            .list_cats_in a{ 
+                display: block;
+                padding: 10px 15px;
+                margin: 1px;
+                border-radius: 5px;
+            }
+            .list_cats_in a:HOVER{ 
+                background-color: rgba(0,0,0,0.1);
+            }
+        </style>
+
+
+        {#% set cats_now = cats_all[get.option] %#}
+        {#{ pa(cats_now) }#}
+
+        <div class="list_cats_in" >
+
+            {% for k, v in cats_all if v['a_parentId'] == cats_now['a_id'] %}
+
+                {#{ pa(v) }#}
+                <a href="/{{ get.level }}/{{ v.id }}/" >{{ v.head }}</a>
+
+            {% endfor %}
+
+        </div>
+
+        {#
+        {% else %}
+        skip up cats
+        #}
+    {% endif %}
+
+{% endspaceless %}

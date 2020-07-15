@@ -1,0 +1,265 @@
+{% spaceless %}
+
+    {% if 1 == 2 %}
+        {{ pa(item) }}
+    {% endif %}
+
+    <div class="product-layout">
+        <div class="product-item-container">
+            {% if 1 == 2 %}
+                <div class="left-block">
+                    <div class="product-image-container  second_img ">
+
+                        {#
+                        <a class="product-img" href="/product.html"><img src="{{ sd }}img/demo/shop/product/product-1.jpg" alt=""></a>
+                        #}
+
+                        <!--Sale Label-->
+
+                        {% if 1 == 2 %}
+                            <span class="new">New</span>
+                            <span class="sale">-25%</span>
+                        {% endif %}
+
+                        <div class="hover">
+                            <ul>
+                                {#
+                                <li class="icon-heart"><a class="wishlist" type="button" data-toggle="tooltip" title="" onclick="wishlist.add('42');" data-original-title="Add to Wish List"><i class="fa fa-heart"></i></a></li>
+                                <li class="icon-exchange"><a class="compare" type="button" data-toggle="tooltip" title="" onclick="compare.add('42');" data-original-title="Compare this Product"><i class="fa fa-exchange"></i></a></li>
+                                #}
+                                <li class="icon-search"><a class="quickview iframe-link " data-fancybox-type="iframe" href="quickview.html">  <i class="fa fa-search" aria-hidden="true"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="right-block">
+                <div class="caption">
+
+                    {# <pre>{{ item.head|raw|replace({'\\"':'"'}) }}</pre> #}
+                    <div class="name_item">
+                        <h4><a href="/{{ get.level }}/{{ get.option }}/{{ item.id }}/{{ f__translit(item.head) }}/">{{ item.head|replace({'\\"':'"'}) }}</a></h4>
+                    </div>
+
+                    {#
+                    <div class="ratings">
+                        <div class="rating-box">
+                            <span class=""><i class="fa fa-star "></i></span>
+                            <span class=""><i class="fa fa-star "></i></span>
+                            <span class=""><i class="fa fa-star "></i></span>
+                            <span class=""><i class="fa fa-star "></i></span>
+                            <span class="gray"><i class="fa fa-star "></i></span>
+                        </div>
+                    </div>
+                    #}
+
+                    <div class="price">
+                        {% if item.a_price is defined %}
+                            <span class="price-new">{{ item.a_price|number_format(0,'.','`') }} ₽</span>
+                        {% else %}
+                            <span class="price-new">под заказ</span>
+                        {% endif %}
+                    </div>
+
+                    {#
+                    <div class="description item-desc hidden">
+                        <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est . </p>
+                    </div>
+                    #}
+
+                </div>
+
+                <div class="button-group">
+                    <button class="shop__add_to_cart addToCart btn btn-default " 
+                            style="width: auto; xdisplay: inline-block;"
+                            xtype="button" xdata-toggle="tooltip" 
+                            xtitle="" onclick="cart.add('42', '1');" 
+                            xdata-original-title="Add to Cart"
+
+                            action="add_item_to_cart"
+                            aj_id ="{{ item.id }}"
+                            aj_name ="{{ item.head }}"
+                            aj_price ="{{ item.a_price }}"
+                            aj_kolvo ="1"
+                            id ="{{ item.head ~ item.a_price ~'1' }}"
+                            s ="{{ creatSecret( item.head ~ item.a_price ~'1' ) }}"
+
+                            > <span class="">Добавить в корзину</span></button>
+                </div>
+
+            </div><!-- right block -->
+
+        </div>
+    </div>
+
+
+
+
+
+
+    {% if 1 == 2 %}
+
+        {% set item = shop_bu__get_item(db, get) %}
+        {#{ pa(item) }#}
+
+        {#
+          <!-- Syntax Highlighter -->
+          <link href="/js/flexslider/css/shCore.css" rel="stylesheet" type="text/css" />
+          <link href="css/shThemeDefault.css" rel="stylesheet" type="text/css" />
+          <!-- Demo CSS -->
+            <link rel="stylesheet" href="css/demo.css" type="text/css" media="screen" />
+        #}
+
+        <link rel="stylesheet" href="/js/flexslider/flexslider.css" type="text/css" media="screen" />
+
+        {#
+        <!-- Modernizr -->
+        <script src="js/modernizr.js"></script>
+        #}
+
+        <div class="it_full_item container-fluid">
+            <div class='row'>
+                <div class='col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12' xstyle='border:1px solid gray;'>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            {#
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Library</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Data</li>
+                            #}
+
+                            {% set nav_cats = shop_bu__searchNavCatalogId( db, item.catalog ) %}
+                            {% set href = '/'~get.level~'/' %}
+
+                            {% for i in range(5,0) %}
+
+                                {#{ i }} ++++ #}
+                                {#{  pa(nav_cats[i]) }#}
+                                {% if nav_cats[i] is defined %}
+
+                                    {#{  pa(nav_cats[i]) }#}
+                                    {% set href = href~nav_cats[i]['head_translit']~'/' %}
+                                    <li class="breadcrumb-item">
+                                        <a href="{{ href }}" >{{ nav_cats[i]['head'] }}</a>
+                                    </li>
+
+                                {% endif %}
+                            {% endfor %}
+
+                        </ol>
+                    </nav>            
+
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-xs-12 col-sm-6 col-md-6 col-lg-7 col-xl-8' xstyle='border:1px solid gray;'>
+
+                    {{ pa(item,2) }}
+
+
+                    {% for k in range(1,5) if item['img'~k] %}
+
+                        <li data-thumb="/di-img/kv_fill/250/module_items_image/{{ item['img'~k] }}">
+                            <img src="/di-img/kv_fill/600/module_items_image/{{ item['img'~k] }}" />
+                        </li>
+
+                    {% endfor %}            
+
+                    <!-- style>
+                        .flex-control-thumbs img { width: 150px; max-height: 100px; }
+                    </style -->
+
+                    <section class="slider" >
+                        <div class="flexslider">
+                            <ul class="slides">
+
+                                {% for k in range(1,5) if item['img'~k] %}
+
+                                    <li data-thumb="/di-img/kv_fill/250/module_items_image/{{ item['img'~k] }}">
+                                        <img src="/di-img/kv_fill/600/module_items_image/{{ item['img'~k] }}" />
+                                    </li>
+
+                                {% endfor %}
+
+                                {#
+                                <li data-thumb="images/kitchen_adventurer_lemon.jpg">
+                                    <img src="images/kitchen_adventurer_lemon.jpg" />
+                                </li>
+                                <li data-thumb="images/kitchen_adventurer_donut.jpg">
+                                    <img src="images/kitchen_adventurer_donut.jpg" />
+                                </li>
+                                <li data-thumb="images/kitchen_adventurer_caramel.jpg">
+                                    <img src="images/kitchen_adventurer_caramel.jpg" />
+                                </li>
+                                #}
+
+                            </ul>
+                        </div>
+                    </section>
+
+                    {#
+                            <a href='/shop/items/{{ v.id }}/'>
+                                <div class="img" style="background-image:url('{{ sd }}module_items_image/{{ v.img1 }}');"></div>
+                            </a>
+                    #}
+
+                </div>
+                <div class='col-xs-12 col-sm-6 col-md-5 col-lg-5 col-xl-4'
+                     xstyle='border:1px solid green;'
+                     >
+                    <a href='/shop/items/{{ v.id }}/'>
+
+                        <h3>{{  item.name }}</h3>
+                        {{  item.price }} ₽ <strike>69.90 ₽</strike>
+                    </a>
+
+                    <p>
+                        {{  item.autor_name }}
+                        <br/><A href="tel:{{  item.autor_phone }}" >{{  item.autor_phone }}</a>
+                        <br/><A href="mailto:{{  item.autor_mail }}" >{{  item.autor_mail }}</a>
+                    </p>
+
+                    <p>
+                        <a href="#" class="btn btn-success">Отправить сообщение</a>
+                    </p>
+
+                    {{ pa(item) }}
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- jQuery -->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="/js/flexslider/js/libs/jquery-1.7.min.js">\x3C/script>')</script>
+
+        <!-- FlexSlider -->
+        {# <script defer src="/js/flexslider/jquery.flexslider.js"></script> #}
+        <script defer src="/js/flexslider/jquery.flexslider-min.js"></script>
+
+        {#
+        <script type="text/javascript">
+            
+            $(function () {
+                SyntaxHighlighter.all();
+            });
+        </script>
+        #}
+
+        <script type="text/javascript">
+                                $(window).load(function () {
+                                    $('.flexslider').flexslider({
+                                        animation: "slide",
+                                        controlNav: "thumbnails",
+                                        start: function (slider) {
+                                            $('body').removeClass('loading');
+                                        }
+                                    });
+                                });
+        </script>
+
+    {% endif %}
+
+{% endspaceless %}

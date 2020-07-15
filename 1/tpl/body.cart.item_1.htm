@@ -1,0 +1,100 @@
+{% spaceless %}
+    <tr id="item_tr_{{ item.id }}" class="cart_item" item_id="{{ item.id }}" >
+
+        {#
+        <td class="text-center"><a href="product.html"><img src="img/demo/shop/product/E3.jpg" alt="Aspire Ultrabook Laptop" title="Aspire Ultrabook Laptop" class="img-thumbnail" width="70px"></a></td>
+        #}
+
+        <td class="text-left">
+
+            <a href="#"
+               class="a_gray_hover_red deleteItemFromCart"
+               style="float:right;"
+               title="Удалить позицию"
+
+               item_id="{{ item.id }}"
+               s="{{ creatSecret(item.id) }}"
+
+               ><i class="fa fa-times-circle"></i></a>
+
+            <a href="/{{ get.level }}/{{ item.id }}/">{{ item.name }}</a>
+
+            <input type="hidden" 
+                   name="items[{{ item.id }}]"
+                   value="{{ item.name }}" 
+                   />
+
+        </td>
+        {#
+        <td class="text-left">Pt 001</td>
+        #}
+        <td class="text-left" width="200px"><div class="input-group btn-block quantity">
+
+                <span class="input-group-btn">
+                    <button type="button" 
+
+                            xdata-toggle="tooltip" 
+                            xtitle="" 
+
+                            class="btn btn-danger shop__change_kolvo"
+                            action="shop__item_remove"
+                            item_id="{{ item.id }}"
+                            s="{{ creatSecret(item.id) }}"
+
+                            xdata-original-title="Отнять 1"
+                            ><i class="fa fa-minus"></i></button>
+                </span>
+
+                <input type="number" 
+                       id="quantity{{ item.id }}"
+                       min="0" max="999" step="1" 
+                       name="quantity[{{ item.id }}]"
+                       value="{{ item.kolvo }}" 
+                       size="1" 
+                       class="form-control"
+                       >
+
+                <span class="input-group-btn">
+                    <button 
+                        type="button" 
+                        xdata-toggle="tooltip" 
+                        xtitle="" 
+                        xonclick="" 
+                        xdata-original-title="Добавить 1"
+
+                        class="btn btn-success shop__change_kolvo" 
+                        action="shop__item_add"
+                        item_id="{{ item.id }}"
+                        s="{{ creatSecret(item.id) }}"
+
+                        ><i class="fa fa-plus"></i></button>
+                        {#
+                        <button type="submit" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Update"><i class="fa fa-clone"></i></button>
+                        #}
+
+                </span>
+            </div>
+        </td>
+        <td class="text-right">
+            {% if item.price == '' %}
+                Позвоним дополнительно уточнить цену
+            {% else %}
+                {{ item.price|number_format(0,'.','`') }}
+            {% endif %}
+            <input type="hidden" 
+                   id="price{{ item.id }}" 
+                   name="price[{{ item.id }}]"
+                   value="{{ item.price }}" 
+                   />
+        </td>
+        <td class="text-right">
+            {% if item.price == '' %}
+            {% else %}
+                <span id="summa_id_show_{{ item.id }}" >{{ (item.price*item.kolvo)|number_format(0,'.','`') }}</span>
+                <input type="hidden" id="summa_id_{{ item.id }}" value="{{ (item.price*item.kolvo) }}" />
+                {% set summa = summa + (item.price*item.kolvo) %}
+            {% endif %}
+        </td>
+
+    </tr>
+{% endspaceless %}

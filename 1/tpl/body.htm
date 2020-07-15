@@ -1,0 +1,372 @@
+{% spaceless %}
+
+
+    {% if get.option is defined and get.option == 'cart' %}
+
+        {% set items_in_cart = shop__get_items_from_cart(db)  %}
+        {#{{ pa(items_in_cart) }}#}
+
+        {% include constant('dir_mods_mod_vers_tpl')~'body.cart.htm' %}
+
+    {% else %}
+
+        {# config #}
+
+        {% set items = shop__get_items(db, get.option, '', ( get.search ?? '' ) )  %}
+        {#{ pa(items) }#}
+
+        {% set on1page = 24 %}
+        {% set page_now = ( get.ext1 ?? get.page ?? 1 ) %}
+        {% set kolvo_page = ( items|length / on1page )|round(0, 'ceil')  %}
+
+        {# сколько показывать ссылок слева справа от текущей страницы #}
+        {% set show_page_in_list = 3 %}
+
+        {% set page_now0 = page_now - 1 %}
+        {% set show_on = ( page_now0 * on1page ) + 1  %}
+        {% set show_off = ( show_on + on1page ) - 1  %}
+
+        {# body #}
+
+
+        {#    
+            {% set item = shop__get_items(db,get.option,get.ext1) %}
+            {% if item != false %}
+                {% set show1item = true %}
+                {#{ pa(get) }}
+                {{ pa(item1) }
+                {% include constant('dir_mods_mod_vers_tpl')~'body.1item.htm' %}            
+            {% endif %}
+        #}
+
+        <!-- /header -->
+
+
+        <section class="shop-list-v2-page">
+            <div class="container-fluid">
+
+                {% if 1 == 2 %}
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            2222222222222
+                            -- link --
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="heading-sub">
+                    {#<h3 class="pull-left">shop list</h3>#}
+                    {#                        <ul class="other-link-sub pull-right">
+                                                <li><a href="#home">Home</a></li>
+                                                <li><a class="active" href="#shop">Shop</a></li>
+                                            </ul>
+                    #}                        <div class="clearfix"></div>
+                </div>
+
+                {#            <div class="widget-banner">
+                                <a href="#" class="images"><img src="img/products/banner-v2.png" alt="images" class="img-responsive"></a>
+                                <div class="banner-text">
+                                    <h2>Just Press</h2>
+                                    <p>Mini camera by Instax</p>
+                                </div>
+                                <div class="banner-button">
+                                    <a href="#" title="button" class="btn-getit">Get It</a>
+                                </div>
+                            </div>
+                #}
+
+                <div class="widget-product-list">
+                    <div class="row">
+                        {% if show_menu2 == true %}
+                            <div class="col-md-3 col-xs-12">
+                                <div class="filter-block">
+                                    {% if 1 == 2 %}
+                                        <div class="filter-block-shop filter-price">
+                                            <div class="block-title">
+                                                <h3>FILTER BY PRICE</h3>
+                                            </div>
+                                            <div class="block-content">
+                                                <div class="price-range-holder">
+                                                    <input type="text" class="price-slider" value="">
+                                                    <span class="min-max">
+                                                        Price: $990 - $3450
+                                                    </span>
+                                                    <span class="filter-button">
+                                                        <a href="#">Filter</a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="filter-block-shop filter-cate">
+                                            <div class="block-title">
+                                                <h3>Categories</h3>
+                                            </div>
+                                            <div class="block-content">
+                                                <ul>
+                                                    <li class="active">
+                                                        <a href="#">Laptop & Computer</a>
+                                                        <span class="number">(08)</span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Accessories</a>
+                                                        <span class="number">(16)</span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Gaming</a>
+                                                        <span class="number">(20)</span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Mac Computers</a>
+                                                        <span class="number">(09)</span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Ultrabooks</a>
+                                                        <span class="number">(51)</span>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">Printers & Ink</a>
+                                                        <span class="number">(07)</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="filter-block-shop">
+                                            <div class="block-title">
+                                                <h3>BRAND</h3>
+                                            </div>
+                                            <div class="block-content">
+                                                <form>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" value="">Accesi</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" value="">Bikis</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" value="">Elle</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" value="">Godo</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" value="">Jeana</label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input type="checkbox" value="">Ladora</label>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div class="filter-block-shop filter-color">
+                                            <div class="block-title">
+                                                <h3>Color</h3>
+                                            </div>
+                                            <div class="block-content">
+                                                <ul>
+                                                    <li><a href="#"><i class="dot black-d"></i>Black </a></li>
+                                                    <li><a href="#"><i class="dot blue-sky"></i>Blue </a></li>
+                                                    <li><a href="#"><i class="dot brown"></i>Brown </a></li>
+                                                    <li><a href="#"><i class="dot"></i>White </a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="{% if show_menu2 == true %}col-md-9{% else %}col-md-12{% endif %} col-xs-12">
+
+                            {# верхняя строчка списка итемов #}
+                            {% if 1 == 1 %}
+                                <div xclass="filter-block bd">
+
+                                    <div class="row" style="padding-bottom: 3vh;">
+
+                                        <div class="col-xs-12 col-md-6" style="padding-left:5%;" >
+
+                                            {% set nav_cat = shop__get_nav_cats(db, get.option) %}
+
+                                            {#{{ pa(nav_cat) }}#}
+
+                                            {% if nav_cat != false %}
+                                            <ul class="other-link-sub xpull-right">
+                                                
+                                                <li><a href="/show/">Авто-АС</a></li>
+                                                
+                                                {% for k,v in nav_cat %}
+                                                <li><a href="/show/{{ v.id }}/">{{ v.head }}</a></li>
+                                                {% endfor %}
+                                                
+                                                {#<li><a class="active" href="#shop">Shop</a></li>#}
+                                                
+                                            </ul>
+                                            {% endif %}
+
+                                        </div>                                        
+
+                                        <div class="col-md-6 hidden-xs">
+
+                                            <div class="box box-view pull-right" style="padding-right:5%;">
+                                                <span>Товары {{ show_on }}–{% if items|length < show_off %}{{ items|length }}{% else %}{{ show_off }}{% endif %} из {{ items|length }}</span>
+                                                {#                                                <div class="button-view">
+                                                                                                    <span class="col"><i class="ion-ios-keypad fa-3a"></i></span>
+                                                                                                    <span class="list"><i class="icon-grid-4"></i></span>
+                                                                                                </div>
+                                                #}                                            </div>
+
+                                        </div>
+
+                                        {% if 1 == 2 %}
+                                            <div class="col-md-7 margin-top3">
+                                                <div class="box show pull-left">
+                                                    <span>Show</span>
+                                                    <button class="dropdown-toggle" type="button" data-toggle="dropdown">12
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="#">12</a></li>
+                                                        <li><a href="#">24</a></li>
+                                                        <li><a href="#">36</a></li>
+                                                    </ul>
+                                                    <span>per page</span>
+                                                </div>
+                                                <div class="box sort pull-right">
+                                                    <span>Sort by:</span>
+                                                    <button class="dropdown-toggle" type="button" data-toggle="dropdown" id="menu2">
+                                                        <span class="dropdown-label">Featured</span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu2">
+                                                        <li><a href="#" title="">Featured</a></li>
+                                                        <li><a href="#" title="">Best Selling</a></li>
+                                                        <li><a href="#" title="">Best Selling</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+                            {% endif %}
+
+
+
+                            {# список итемов #}
+
+                            <div class="product-list grid_full grid_sidebar grid-uniform container-fluid">
+
+                                {#{% include constant('dir_mods_mod_vers_tpl')~'body.cats_in.htm' %}#}
+
+                                {% set nn = 0 %}
+                                {% set nn0 = 0 %}
+                                {% for k, item in items %}
+
+                                    {% if show_on == 1 or ( nn >= show_on and nn <= show_off ) %}
+                                        {% if nn0 <= on1page %}
+                                            {% include constant('dir_mods_mod_vers_tpl')~'body.item.htm' %}
+                                        {% endif %}
+                                        {% set nn0 = nn0+1 %}
+                                    {% endif %}
+
+                                    {% set nn = nn + 1 %}
+
+                                {% endfor %}
+
+                            </div>
+
+
+                            {% if items|length > on1page %}
+
+                                {#{{ items|length }} /#}
+                                {#{{ items|length / on1page }} /#}
+                                {#{%  set kolvo_page = ( items|length / on1page )|round(0, 'ceil') %}#}
+
+                                {#{{ pa(get) }}#}
+
+                                <center>
+                                <div class="product-pagination">
+                                    <ul class="pagination">
+                                        
+                                        {% if page_now > 1 %}
+                                            {#{% set i01 = i - 1 %}}#}
+                                        <li><a href="/show/{{ get.option }}/{{ page_now - 1 }}/"><i class="ion-chevron-left"></i></a></li>
+                                        {% endif %}
+                                        
+                                        
+                                                {#<li class="active"><a href="#">1</a></li>#}
+                                        
+                                        {#kolvo: {{ kolvo_page }}#}
+                                        {#// {{ page_now }}        #}
+                                        {#// {{ show_page_in_list }}        #}
+
+                                        {% set skip_page_in_start = false %}
+                                        {% set skip_page_in_end = false %}
+
+                                        
+                                        
+                                        {% for i in range(1,kolvo_page,1) %}
+
+                                            {% if i == page_now or i == kolvo_page or i == 1 %}
+                                                <li {% if page_now == i %} class="active" {% endif %} >
+                                                    <a href="/show/{{ get.option }}/{{ i }}/">{{ i }}</a>
+                                                </li>
+
+                                            {% elseif i < page_now %}
+                                                
+                                                {% if i > ( page_now - show_page_in_list ) %}
+                                                    <li >
+                                                        <a href="/show/{{ get.option }}/{{ i }}/">{{ i }}</a>
+                                                    </li>
+                                                {% elseif skip_page_in_start == false %}
+                                                    {% set skip_page_in_start = true %}
+                                                    <li >
+                                                        <a href="#" onclick="return false;" >..</a>
+                                                    </li>
+                                                {% endif %}
+                                                
+                                            {% elseif i > page_now %}
+                                                {% if i < ( page_now + show_page_in_list ) %}
+                                                    <li >
+                                                        <a href="/show/{{ get.option }}/{{ i }}/">{{ i }}</a>
+                                                    </li>
+                                                {% elseif skip_page_in_end == false %}
+                                                    {% set skip_page_in_end = true %}
+                                                    <li >
+                                                        <a href="#" onclick="return false;" >..</a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endif %}
+
+                                        {% endfor %}
+
+                                        
+                                        {#<li><a href="#">3</a></li>#}
+                                        {#<li><a href="#">...</a></li>#}
+                                        {#<li><a href="#">5</a></li>#}
+                                        {#{{ kolvo_page }} / {{ page_now }}#}
+                                        {% if page_now < kolvo_page %}
+                                        <li><a href="/show/{{ get.option }}/{{ page_now + 1 }}/"><i class="ion-chevron-right"></i></a></li>
+                                        {% endif %}
+                                        
+                                    </ul>
+                                </div>
+                                </center>
+
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>    
+
+    {% endif %}
+
+{% endspaceless %}

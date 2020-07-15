@@ -1,0 +1,758 @@
+{% spaceless %}
+
+    
+    {% if get.option is defined and get.option == 'cart' %}
+    {% else %}
+    
+    {% set items = shop__get_items(db, get.option, '', ( get.search ?? '' ) )  %}
+    {#{ pa(items) }#}
+
+    {#    {% set item = shop__get_items(db,get.option,get.ext1) %}
+    
+        {% if item != false %}
+    
+            {% set show1item = true %}
+    
+            {#{ pa(get) }}
+            {{ pa(item1) }
+    
+            {% include constant('dir_mods_mod_vers_tpl')~'body.1item.htm' %}            
+    
+        {% endif %}
+    #}
+
+    <!-- /header -->
+    <section class="shop-list-v2-page">
+        <div class="container">
+            <div class="heading-sub">
+                {#<h3 class="pull-left">shop list</h3>#}
+                <ul class="other-link-sub pull-right">
+                    <li><a href="#home">Home</a></li>
+                    <li><a class="active" href="#shop">Shop</a></li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+
+            {#            <div class="widget-banner">
+                            <a href="#" class="images"><img src="img/products/banner-v2.png" alt="images" class="img-responsive"></a>
+                            <div class="banner-text">
+                                <h2>Just Press</h2>
+                                <p>Mini camera by Instax</p>
+                            </div>
+                            <div class="banner-button">
+                                <a href="#" title="button" class="btn-getit">Get It</a>
+                            </div>
+                        </div>
+            #}                
+            <div class="widget-product-list">
+                <div class="row">
+                    <div class="col-md-3 col-xs-12">
+                        <div class="filter-block">
+                            {% if 1 == 2 %}
+                                <div class="filter-block-shop filter-price">
+                                    <div class="block-title">
+                                        <h3>FILTER BY PRICE</h3>
+                                    </div>
+                                    <div class="block-content">
+                                        <div class="price-range-holder">
+                                            <input type="text" class="price-slider" value="">
+                                            <span class="min-max">
+                                                Price: $990 - $3450
+                                            </span>
+                                            <span class="filter-button">
+                                                <a href="#">Filter</a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="filter-block-shop filter-cate">
+                                    <div class="block-title">
+                                        <h3>Categories</h3>
+                                    </div>
+                                    <div class="block-content">
+                                        <ul>
+                                            <li class="active">
+                                                <a href="#">Laptop & Computer</a>
+                                                <span class="number">(08)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Accessories</a>
+                                                <span class="number">(16)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Gaming</a>
+                                                <span class="number">(20)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Mac Computers</a>
+                                                <span class="number">(09)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Ultrabooks</a>
+                                                <span class="number">(51)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Printers & Ink</a>
+                                                <span class="number">(07)</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="filter-block-shop">
+                                    <div class="block-title">
+                                        <h3>BRAND</h3>
+                                    </div>
+                                    <div class="block-content">
+                                        <form>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="">Accesi</label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="">Bikis</label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="">Elle</label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="">Godo</label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="">Jeana</label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" value="">Ladora</label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="filter-block-shop filter-color">
+                                    <div class="block-title">
+                                        <h3>Color</h3>
+                                    </div>
+                                    <div class="block-content">
+                                        <ul>
+                                            <li><a href="#"><i class="dot black-d"></i>Black </a></li>
+                                            <li><a href="#"><i class="dot blue-sky"></i>Blue </a></li>
+                                            <li><a href="#"><i class="dot brown"></i>Brown </a></li>
+                                            <li><a href="#"><i class="dot"></i>White </a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-9 col-xs-12">
+
+                        {# верхняя строчка списка итемов #}
+                        {% if 1 == 1 %}
+                            <div class="filter-block bd">
+                                <div class="row">
+
+                                    {% set on1page = 21 %}
+                                    {% set page_now = ( get.page ?? 1 ) %}
+                                    {% set kolvo_page = ( items|length / on1page )|round(0, 'floor')  %}
+
+                                    {%  set page_now0 = page_now - 1 %}
+                                    {% set show_on = ( page_now0 * on1page ) + 1  %}
+                                    {% set show_off = ( show_on + on1page ) - 1  %}
+
+                                    <div class="col-md-5">
+                                        <div class="box box-view">
+                                            <span>Showing {{ show_on }}–{% if items|length < show_off %}{{ items|length - 1 }}{% else %}{{ show_off }}{% endif %} из {{ items|length - 1 }}</span>
+                                            <div class="button-view">
+                                                <span class="col"><i class="ion-ios-keypad fa-3a"></i></span>
+                                                <span class="list"><i class="icon-grid-4"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    {% if 1 == 2 %}
+                                        <div class="col-md-7 margin-top3">
+                                            <div class="box show pull-left">
+                                                <span>Show</span>
+                                                <button class="dropdown-toggle" type="button" data-toggle="dropdown">12
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">12</a></li>
+                                                    <li><a href="#">24</a></li>
+                                                    <li><a href="#">36</a></li>
+                                                </ul>
+                                                <span>per page</span>
+                                            </div>
+                                            <div class="box sort pull-right">
+                                                <span>Sort by:</span>
+                                                <button class="dropdown-toggle" type="button" data-toggle="dropdown" id="menu2">
+                                                    <span class="dropdown-label">Featured</span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu" aria-labelledby="menu2">
+                                                    <li><a href="#" title="">Featured</a></li>
+                                                    <li><a href="#" title="">Best Selling</a></li>
+                                                    <li><a href="#" title="">Best Selling</a></li>
+                                                </ul>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        
+                        
+                        {# список итемов #}
+                        
+                        <div class="product-list grid_full grid_sidebar grid-uniform">
+                            
+
+                                    {#{% include constant('dir_mods_mod_vers_tpl')~'body.cats_in.htm' %}#}
+
+                                    {% set nn = 0 %}
+                                    {% set nn0 = 0 %}
+                                    {% for k, item in items %}
+
+                                        {% if show_on == 1 or ( nn >= show_on and nn < show_off ) %}
+                                            {% if nn0 < 21 %}
+                                            {% include constant('dir_mods_mod_vers_tpl')~'body.item.htm' %}
+                                            {% endif %}
+                                            {% set nn0 = nn0+1 %}
+                                        {% endif %}
+
+                                        {% set nn = nn + 1 %}
+
+                                    {% endfor %}
+                            
+                            
+                                    
+                                    
+                                    {% if 1 == 2 %}
+                            <div class="product-list-item">
+                                <div class="product-item-img">
+                                    <a href="#"><img src="img/products/product2.png" alt="images" class="img-responsive"></a>
+                                </div>
+                                <div class="product-item-info">
+                                    <h3><a href="#" title="">Sony Xperia X Compact - SN5605 Unlocked Smartphone</a></h3>
+                                    <div class="product-item-star ratingstar sm">
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <span class="number">(12)</span>
+                                    </div>
+                                    <div class="prod-price">
+                                        <span class="price black">$199.69</span>
+                                    </div>
+                                    <div class="button-ver2">
+                                        <a href="#" class="addcart-ver2" title="Add to cart"><span class="icon"></span>ADD TO CART</a>
+                                        <a href="#" class="quickview" title="quick view"><i class="ion-eye fa-4" aria-hidden="true"></i></a>
+                                        <a href="#" class="wishlist" title="wishlist"><i class="ion-heart fa-4" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-list-item">
+                                <div class="product-item-img">
+                                    <a href="#"><img src="img/products/product3.png" alt="images" class="img-responsive"></a>
+                                    <div class="label label-2 red label-top-20">Hot</div>
+                                </div>
+                                <div class="product-item-info">
+                                    <h3><a href="#" title="">Sony Xperia X Compact - SN5605 Unlocked Smartphone</a></h3>
+                                    <div class="product-item-star ratingstar sm">
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <span class="number">(12)</span>
+                                    </div>
+                                    <div class="prod-price">
+                                        <span class="price black">$199.69</span>
+                                    </div>
+                                    <div class="button-ver2">
+                                        <a href="#" class="addcart-ver2" title="Add to cart"><span class="icon"></span>ADD TO CART</a>
+                                        <a href="#" class="quickview" title="quick view"><i class="ion-eye fa-4" aria-hidden="true"></i></a>
+                                        <a href="#" class="wishlist" title="wishlist"><i class="ion-heart fa-4" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-list-item">
+                                <div class="product-item-img">
+                                    <a href="#"><img src="img/products/product4.png" alt="images" class="img-responsive"></a>
+                                </div>
+                                <div class="product-item-info">
+                                    <h3><a href="#" title="">Sony Xperia X Compact - SN5605 Unlocked Smartphone</a></h3>
+                                    <div class="product-item-star ratingstar sm">
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <span class="number">(12)</span>
+                                    </div>
+                                    <div class="prod-price">
+                                        <span class="price black">$199.69</span>
+                                    </div>
+                                    <div class="button-ver2">
+                                        <a href="#" class="addcart-ver2" title="Add to cart"><span class="icon"></span>ADD TO CART</a>
+                                        <a href="#" class="quickview" title="quick view"><i class="ion-eye fa-4" aria-hidden="true"></i></a>
+                                        <a href="#" class="wishlist" title="wishlist"><i class="ion-heart fa-4" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-list-item">
+                                <div class="product-item-img">
+                                    <a href="#"><img src="img/products/product5.png" alt="images" class="img-responsive"></a>
+                                    <div class="label label-2 red label-top-20">Hot</div>
+                                </div>
+                                <div class="product-item-info">
+                                    <h3><a href="#" title="">Sony Xperia X Compact - SN5605 Unlocked Smartphone</a></h3>
+                                    <div class="product-item-star ratingstar sm">
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                                        <span class="number">(12)</span>
+                                    </div>
+                                    <div class="prod-price">
+                                        <span class="price black">$199.69</span>
+                                    </div>
+                                    <div class="button-ver2">
+                                        <a href="#" class="addcart-ver2" title="Add to cart"><span class="icon"></span>ADD TO CART</a>
+                                        <a href="#" class="quickview" title="quick view"><i class="ion-eye fa-4" aria-hidden="true"></i></a>
+                                        <a href="#" class="wishlist" title="wishlist"><i class="ion-heart fa-4" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                                    {% endif %}
+                        </div>
+
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <div class="product-pagination">
+                            <ul class="pagination">
+                                <li><a href="#"><i class="ion-chevron-left"></i></a></li>
+                                <li class="active"><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">...</a></li>
+                                <li><a href="#">5</a></li>
+                                <li><a href="#"><i class="ion-chevron-right"></i></a></li>
+                            </ul>
+                        </div>
+
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>    
+
+
+
+
+    {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {% if 1 == 2 %}
+
+
+        <style>
+            .grid .name_item{ 
+                height: 6rem; 
+                xvertical-align: baseline;
+                xdisplay: flex;
+                xborder: 1px solid gray;
+            }
+
+            .grid .product-layout{
+                xbackground-color: rgba(0,0,255,0.05);            
+                xmargin-right: 2px;
+                xmargin-bottom: 2px;
+                xpadding: 0;
+            }
+            .grid .product-item-container{
+                background-color: rgba(0,0,255,0.05);            
+                xborder-radius: 3px;
+                xoverflow: hidden;
+                padding-bottom: 2rem;
+            }
+
+
+        </style>
+
+        {% set cats_now = cats_all[get.option] %}
+
+        <div class="container-fluid">
+
+            {% include constant('dir_mods_mod_vers_tpl')~'body.nav.htm' %}
+
+            <div class="row">
+
+                {% if get.option is defined and get.option == 'cart' %}
+
+                    {% include constant('dir_mods_mod_vers_tpl')~'body.cart.htm' %}            
+
+                {% else %}
+
+                    {% set show1item = false %}
+
+                    {# если есть 1 товар выбранный #}
+                    {#% if get.ext1 is defined and items[get.ext1] is defined %#}
+                    {% if get.ext1 is defined %}
+
+                        {% set item = shop__get_items(db,get.option,get.ext1) %}
+
+                        {% if item != false %}
+
+                            {% set show1item = true %}
+
+                            {#{ pa(get) }}
+                            {{ pa(item1) }#}
+
+                            {% include constant('dir_mods_mod_vers_tpl')~'body.1item.htm' %}            
+
+                        {% endif %}
+
+                    {% endif %}
+
+
+                    {# если нет 1 товара, показываем все товары 1 категории ( и всех вложенных категорий ) #}
+                    {% if show1item == false %}
+
+                        {# если ищем, показываем товары из поиска #}
+                        {% if get.search is defined and get.search|length > 0 %}
+                            <div class="alert-warning" style="padding: 10px 20px; margin-bottom: 3rem;" >
+
+                                Поиск: <u>{{ get.search }}</u> 
+
+                                {% if get.option is defined and get.option|length > 0 %}
+                                    в текущем каталоге (<a href="?level={{ get.level }}&search={{ get.search|e }}">искать во всех каталогах</a>)
+                                {% endif %}
+                            </div>
+
+                        {% endif %}
+
+                        {% set items = shop__get_items(db, get.option, '', ( get.search ?? '' ) )  %}
+                        {#{ pa(items) }#}
+
+                        {% set nn = 0 %}
+
+                        <div id="content" class="col-xs-12 type-1">
+                            <div class="products-category">
+
+                                {% set on1page = 20 %}
+                                {% set page_now = ( get.page ?? 1 ) %}
+                                {% set kolvo_page = ( items|length / on1page )|round(0, 'floor')  %}
+
+                                {%  set page_now0 = page_now - 1 %}
+                                {% set show_on = ( page_now0 * on1page ) + 1  %}
+                                {% set show_off = ( show_on + on1page ) - 1  %}
+
+                                <div class="product-filter filters-panel">
+                                    <div class="row">
+
+                                        <div class="col-md-5 visible-lg">
+                                            <div class="view-mode">
+                                                <div class="list-view">
+                                                    <button class="btn btn-default grid active" 
+                                                            data-view="grid" 
+                                                            data-toggle="tooltip" 
+                                                            data-original-title="Grid"
+                                                            >
+                                                        <i class="fa fa-th-large" aria-hidden="true"></i>
+                                                    </button>
+
+                                                    <button class="btn btn-default list2" 
+                                                            data-view="list2" 
+                                                            data-toggle="tooltip" 
+                                                            data-original-title="List2"
+                                                            >
+                                                        <i class="fa fa-th-list"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="short-by-show form-inline text-right col-lg-7 col-md-12 col-sm-12 col-xs-12">
+                                            <div class="text">
+                                                <p>позиции {{ show_on }} - {% if items|length < show_off %}{{ items|length - 1 }}{% else %}{{ show_off }}{% endif %} из {{ items|length - 1 }}</p>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <!-- //end Filters -->
+
+
+
+                                <!--changed listings-->
+                                <div class="products-list grid">
+
+                                    {% include constant('dir_mods_mod_vers_tpl')~'body.cats_in.htm' %}
+
+                                    {% set nn = 0 %}
+                                    {% for k, item in items %}
+
+                                        {% if show_on == 1 or ( nn >= show_on and nn < show_off ) %}
+
+                                            {% include constant('dir_mods_mod_vers_tpl')~'body.item.htm' %}
+
+                                        {% endif %}
+
+                                        {% set nn = nn + 1 %}
+
+                                    {% endfor %}
+
+                                </div>
+                                <!--// End Changed listings-->
+                                <br clear="all" />
+                                <!-- Filters -->
+                                <div class="product-filter filters-panel">
+                                    <div class="row">
+
+                                        {# <div class="short-by-show form-inline text-right col-lg-7 col-sm-12 col-xs-12" >#}
+                                        <div class="col-lg-6 col-sm-6 col-xs-12 text-center">
+
+                                            <div class="text">
+                                                <p>&nbsp;<br/>позиции {{ show_on }} - {% if items|length < show_off %}{{ items|length - 1 }}{% else %}{{ show_off }}{% endif %} из {{ items|length - 1 }}</p>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-6 col-sm-6 col-xs-12 text-center">
+
+                                            {# kolvo_page #}
+
+                                            {% if items|length > on1page %}
+
+                                                <div class="box-pagination xtext-right">
+                                                    <ul class="pagination">
+
+                                                        {% set get1 = get %}
+
+                                                        {% if page_now > 1 %}
+                                                            {% set get1 = get1|merge({'page':(page_now-1)}) %}
+                                                            <li>
+                                                                <a href="/index.php?{{ http_build_query(get1) }}">
+                                                                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                                                                </a>
+                                                            </li>
+                                                        {% endif %}
+
+                                                        {% for i2 in range(0, kolvo_page, 1) %}
+
+                                                            {% set i = i2 + 1 %}
+                                                            {% set page_show = false %}
+
+                                                            {% if ( ( page_now + 5 ) > i and ( page_now - 5 ) < i ) or i == 1 or i == kolvo_page %}
+                                                                {% set page_show = true %}
+                                                            {% endif %}
+
+                                                            {% if ( i == 2 and page_show == false ) or ( i == ( kolvo_page - 1 ) and page_show == false ) %}
+                                                                <li>
+                                                                    <a href="#">...</a>
+                                                                </li>
+                                                            {% endif %}
+
+                                                            {% if page_show == true %}
+                                                                {% set get1 = get1|merge({'page':i}) %}
+                                                                <li {% if i == page_now %} class="active" {% endif %} >
+                                                                    <a href="/index.php?{{ http_build_query(get1) }}">{{ i }}</a>
+                                                                </li>
+                                                            {% endif %}
+
+                                                            {#
+                                                            <li class="active"><span>1</span></li>
+                                                            <li><a href="#">2</a></li>
+                                                            <li><a href="#">3</a></li>
+                                                            <li><a href="#">4</a></li>
+                                                            <li><a href="#"><i class="fa fa-angle-right" aria-hidden="true"></i></a></li>
+                                                            #}
+
+                                                        {% endfor %}
+
+                                                        {% if page_now < kolvo_page %}
+
+                                                            {% set get1 = get1|merge({'page':(page_now+1)}) %}
+                                                            <li>
+                                                                <a href="/index.php?{{ http_build_query(get1) }}">
+                                                                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                                                </a>
+                                                            </li>
+
+                                                        {% endif %}
+                                                    </ul>
+                                                </div>
+
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- //end Filters -->
+
+                            </div>
+
+                        </div>
+
+                    {% endif %}
+
+                    {# что то старое #}
+                    {% if items is defined and 1 == 2 %}
+                        {% for k,v in items %}
+
+                            {% set nn = nn + 1 %}
+
+                            {% if nn < 5 %}
+                                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-3 col-xl-3 shop__item" >
+                                    <h2>{{ v.head }}</h2>
+
+                                    {% if v.a_price is defined and v.a_price > 0 %}
+                                        {{ v.a_price|number_format(0, '.', ' ') }} ₽
+                                    {% else %}
+                                        под заказ
+                                    {% endif %}
+
+                                    <br/>
+                                    <button
+                                        class="shop__add_to_cart"
+                                        >В корзину</button>
+
+                                    {#{ pa(v) }#}
+                                </div>
+                            {% endif %}
+
+                            {% if 1 == 2 %}
+                                {% if 1 == 2 %}
+                                    <div 
+                                        class="col-xs-6 col-sm-6 col-md-3 col-lg-4 col-xl-3 shop_bu__item"
+                                        xclass="it_item2"
+                                        xstyle="border: 1px solid gray;"
+                                        >
+                                        <div>
+
+                                            <a href='/{{ shop_level }}/items/{{ v.id }}/'>
+                                                <div class="img" style="background-image:url('{{ sd }}module_items_image/{{ v.img1 }}');"></div>
+                                            </a>
+
+                                            <div class="info">
+                                                <a href='/{{ shop_level }}/items/{{ v.id }}/'>
+                                                    Бананы 
+                                                    <br/>
+                                                    4.90 ₽ <strike>69.90 ₽</strike>
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if 1 == 2 %}            
+                                    {% if 1 == 2 %}
+                                        <h3>{{ v.name }}</h3>
+
+                                        <p style="display:inline-block; padding: 5px 15px;background-color: rgba(0,250,0,0.5);">{{ v.price }} р</p>
+                                        <br clear="all" />
+
+                                        {% if v.img1 is defined %}
+                                            <img src="{{ sd }}module_items_image/{{ v.img1 }}" style="max-height: 150px; max-width: 150px; float: left;" >
+                                        {% endif %}
+
+                                        {% if v.img2 is defined %}
+                                            <img src="{{ sd }}module_items_image/{{ v.img2 }}" style="max-height: 150px; max-width: 150px; float: left;" >
+                                        {% endif %}
+
+                                        {% if v.img3 is defined %}
+                                            <img src="{{ sd }}module_items_image/{{ v.img3 }}" style="max-height: 150px; max-width: 150px; float: left;" >
+                                        {% endif %}
+
+                                        {% if v.img4 is defined %}
+                                            <img src="{{ sd }}module_items_image/{{ v.img4 }}" style="max-height: 150px; max-width: 150px; float: left;" >
+                                        {% endif %}
+
+                                        {% if v.img5 is defined %}
+                                            <img src="{{ sd }}module_items_image/{{ v.img5 }}" style="max-height: 150px; max-width: 150px; float: left;" >
+                                        {% endif %}
+
+                                        <br clear="all" />
+                                        {{ v.opis|raw }}
+                                        {#{ pa(v) }#}
+
+                                    {% endif %}
+
+                                    {% if 1 == 2 %}            
+
+                                        <a href='#12'>
+                                            <div class="it_item">
+                                                <div>
+                                                    <div class="img" style="background-image:url('{{ sd }}module_items_image/{{ v.img1 }}');">
+
+                                                    </div>
+                                                    <div class="info">
+                                                        4.90 ₽ <strike>69.90 ₽</strike>
+                                                        <br/> Бананы 
+                                                    </div>
+                                                </div>
+                                                <br clear='all' />
+                                                <div class="info2">
+                                                    1 кг.
+                                                </div>
+                                            </div>
+                                        </a>
+
+                                    {% endif %}
+
+                                {% endif %}
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                {% endif %}
+
+            </div>
+
+        </div>
+    {% endif %}
+
+{% endspaceless %}
