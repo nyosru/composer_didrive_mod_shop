@@ -24,6 +24,8 @@ $function = new Twig_SimpleFunction('shop__get_nav_cats', function ( $db, $cat_i
 
                 $nav_cat[$i] = $cats0[$cat_id];
                 $next = $cats0[$cat_id]['a_parentId'];
+            } else {
+                break;
             }
         } else {
 

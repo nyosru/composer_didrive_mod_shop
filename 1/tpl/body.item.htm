@@ -7,19 +7,24 @@
     {% endif %}
 
     <div class="col-xs-6 col-sm-6 col-md-4 {% if show_menu2 == true %}col-xl-4 col-lg-3{% else %}col-xl-3 col-lg-2{% endif %} xproduct-list-item">
-        
+
         <div class="product-item-img">
             {% set img1 = search_img(item) %}
             {# <a href="#"><img src="img/products/product1.png" alt="images" class="img-responsive"></a> #}
             {#<a href="#">#}<img 
-                    src="{% if img1 != false %}{{ img1 }}{% else %}{{ sd }}photo_no.jpg{% endif %}" alt="images" class="img-responsive"
-                    style="width:100%; max-width: 250px; max-height: 140px;"
-                    >{#</a>#}
-                {#<div class="label label-2 red label-top-20">Hot</div>#}
+                src="{% if img1 != false %}{{ img1 }}{% else %}{{ sd }}photo_no.jpg{% endif %}" alt="images" class="img-responsive"
+                style="width:100%; max-width: 250px; max-height: 140px;"
+                >{#</a>#}
+            {#<div class="label label-2 red label-top-20">Hot</div>#}
         </div>
-        
+
         <div class="product-item-info">
-            <h3 class="item_name_vitrin" ><a href="#" onclick="return false;" title="{{ item.head }}" class="black" >{{ item.head|replace({'\\"':'"'}) }}</a></h3>
+
+            <div class="item_name_vitrin_resize" >
+                <h3 class="item_name_vitrin" >
+                    <a href="#" onclick="return false;" title="{{ item.head }}" class="black" >{{ item.head|replace({'\\"':'"'}) }}</a>
+                </h3>
+            </div>
 
             {#
             <div class="product-item-star ratingstar sm">
@@ -87,7 +92,7 @@
                        > 
                         В корзине
                     </a>
-                       
+
                 </center>
 
 

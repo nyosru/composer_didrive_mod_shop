@@ -1,6 +1,7 @@
 <?php
 
-    $vv['in_body_end'][] = '<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>';
+
+$vv['in_body_end'][] = '<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>';
 
 if (isset($_POST['io']) && isset($_POST['phone']) && isset($_POST['items'])) {
 
@@ -21,7 +22,6 @@ if (isset($_POST['io']) && isset($_POST['phone']) && isset($_POST['items'])) {
         } else {
             $msg .= PHP_EOL . $_POST['quantity'][$k] . ' шт. под заказ';
         }
-
     }
 
     $msg .= PHP_EOL . PHP_EOL . 'Итого: ' . number_format($summa, '0', '.', '`') . ' р';

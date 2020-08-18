@@ -1,7 +1,7 @@
 {
     "name": "didrive_mod/shop",
     "description": "модуль для витрины магазина",
-    "version": "0.1.0",
+    "version": "0.1.1",
     
     "keywords": [
         "didrive", "module", "nyos", "uralweb.info"
@@ -16,7 +16,7 @@
     ],
     
     "homepage": "https://uralweb.info/php/#classes",
-    "license": "Apache 2.0",
+    "license": "MIT",
     "require": {
         "php": ">=7.1.0"
         ,

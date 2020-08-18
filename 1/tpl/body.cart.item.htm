@@ -12,7 +12,7 @@
     #}    
     <tr class="cart_item" item_id="{{ item.id }}" >
 
-        <td class="product-thumbnail">
+        <td class="product-thumbnail hidden-xs">
             {%  set img_item = search_img( items_in_cart[item.id] ) %}
             {#<a href="#"><img src="img/checkout/product-1.jpg" alt="images" class="img-responsive"></a>#}
             <img src="{% if img_item|length > 5 %}{{ img_item }}{% else %}{{ sd }}photo_no.jpg{% endif %}" alt="images" class="img-responsive">
@@ -44,11 +44,12 @@
                 <input type="text" name="quantity" value="1">
             </div>
             #}
+    <center>
+            {#<div style="width:200px;">#}
 
-            <div style="width:200px;">
-
+            <nobr>
                 <button type="button" 
-                        style="float:left;"
+                        style="display:inline-block;xfloat:left; paddin: 8px; border-radius: 3px;"
 
                         xdata-toggle="tooltip" 
                         xtitle="" 
@@ -62,7 +63,7 @@
                         ><i class="fa fa-minus"></i></button>
 
                 <input type="number" 
-                       style="width:80px; float:left;"
+                       style="display:inline-block; width:80px; xfloat:left;"
 
                        id="quantity{{ item.id }}"
 
@@ -80,7 +81,7 @@
                     xonclick="" 
                     xdata-original-title="Добавить 1"
 
-                    style="float:left;"
+                    style="display:inline-block;xfloat:left;"
 
                     class="btn btn-xs btn-success shop__change_kolvo" 
                     action="shop__item_add"
@@ -91,11 +92,15 @@
                     {#
                     <button type="submit" data-toggle="tooltip" title="" class="btn btn-primary" data-original-title="Update"><i class="fa fa-clone"></i></button>
                     #}
-
-            </div>
+</nobr>
+            {#</div>#}
+    </center>
+        </td>
+        <td class="product-price xproduct-subtotal hidden-xs">
+            <p id="summa{{ item.id }}" >{{ items_in_cart[item.id]['a_price'] ? ( items_in_cart[item.id]['a_price'] * item.kolvo )|number_format(2,',','`') : 'обозначим при заказе' }}</p>
         </td>
         <td class="product-price xproduct-subtotal">
-            <p id="summa{{ item.id }}" >{{ items_in_cart[item.id]['a_price'] ? ( items_in_cart[item.id]['a_price'] * item.kolvo )|number_format(2,',','`') : 'обозначим при заказе' }}</p>
+            <a href="/index.php?delete_from_cart={{ item.id }}" class="cart_item_delete" title="убрать позицию из заказа" onclick="return confirm('убрать позицию из заказа ?'); " ><span class="fa fa-remove"></span></a>
         </td>
     </tr>
 

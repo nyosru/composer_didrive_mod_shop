@@ -1,6 +1,5 @@
 {% spaceless %}
 
-
     {% if get.option is defined and get.option == 'cart' %}
 
         {% set items_in_cart = shop__get_items_from_cart(db)  %}
@@ -15,7 +14,7 @@
         {% set items = shop__get_items(db, get.option, '', ( get.search ?? '' ) )  %}
         {#{ pa(items) }#}
 
-        {% set on1page = 24 %}
+        {% set on1page = 23 %}
         {% set page_now = ( get.ext1 ?? get.page ?? 1 ) %}
         {% set kolvo_page = ( items|length / on1page )|round(0, 'ceil')  %}
 
@@ -282,7 +281,7 @@
                             </div>
 
 
-                            {% if items|length > on1page %}
+                            {% if items|length > on1page and get.option is defined and get.option > 0 %}
 
                                 {#{{ items|length }} /#}
                                 {#{{ items|length / on1page }} /#}

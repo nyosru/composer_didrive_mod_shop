@@ -21,11 +21,12 @@
                         <table class="table table- xshop_table">
                             <thead>
                                 <tr style="position:sticky; top:0; background-color:white; border-bottom: 1px solid gray;" >
-                                    <th class="product-thumbnail">&nbsp;</th>
-                                    <th class="product-name">Товар</th>
-                                    <th class="product-price">Цена</th>
-                                    <th class="quantity">Кол-во</th>
-                                    <th class="product-subtotal">Сумма</th>
+                                    <th class="product-thumbnail hidden-xs">&nbsp;</th>
+                                    <th class="product-name text-center">Товар</th>
+                                    <th class="product-price text-center">Цена</th>
+                                    <th class="quantity text-center">Кол-во</th>
+                                    <th class="product-subtotal text-center hidden-xs">Сумма</th>
+                                    <th>&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,6 +79,10 @@
                                 {% endif %}
                             </tbody>
                         </table>
+{#                            <br/>
+                            <br/>
+                            <center><a href="/show/" class="btn btn-default xbtn-continue-shopping"><span style="color:green;" class="fa fa-plus" ></span> Добавить товары</a></center>
+#}                            
                     </div>
                     <div class="col-md-4 col-sm-12">
                         <div class="aside-shopping-cart-total">
@@ -129,10 +134,10 @@
             </form>
             <div class="shopping-cart-option">
 
-                <div class="button-option">
-                    <a href="/show/" class="btn-continue-shopping active">Добавить ещё товары</a>
+                {#<div class="button-option">#}
+                   {# <a href="/show/" class="btn-continue-shopping active">Добавить ещё товары</a>#}
                     {#<a href="#" class="btn-clear">Очистить корзину</a>#}
-                </div>
+                {#</div>#}
 
                 {% if 1 == 2 %}
                     <div class="shopping-cart-coupon">
