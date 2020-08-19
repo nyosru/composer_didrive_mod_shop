@@ -33,47 +33,61 @@ if (isset($get['action']) && $get['action'] == 'scan_new_file') {
 
 if (( isset($get['action']) && $get['action'] == 'scan_new_file' ) || (isset($_GET['action']) && $_GET['action'] == 'scan_new_file')) {
 
-    //f\pa($now);
-    // \f\pa($now, 2);
-    // $amnu = \Nyos\nyos::get_menu($now['folder']);
-    $amnu = \Nyos\nyos::getMenu($vv['folder']);
+    try {
 
-    //\f\pa($amnu);
+        //f\pa($now);
+        // \f\pa($now, 2);
+        // $amnu = \Nyos\nyos::get_menu($now['folder']);
+        
+        \Nyos\nyos::getMenu();
+        // $amnu = \Nyos\nyos::$menu;
 
-    if (isset($amnu) && sizeof($amnu) > 0) {
-        foreach ($amnu as $k1 => $v1) {
+        if (empty(\Nyos\nyos::$menu))
+            throw new \Exception('пустое меню');
 
-            //echo '<br/>'.__LINE__.' '.$k1;
+        \f\pa( \Nyos\nyos::$menu, 2);
 
+        // if (isset($amnu) && sizeof($amnu) > 0) {
+        if (1 == 1) {
+            foreach (\Nyos\nyos::$menu as $k1 => $v1) {
 
-            if (isset($v1['type']) && $v1['type'] == 'page.data') {
+                //echo '<br/>'.__LINE__.' '.$k1;
 
-                echo '<br/>' . __LINE__ . ' ' . $k1;
+                if (isset($v1['type']) && $v1['type'] == 'page.data' && !empty($v1['datain_name_file'])) {
 
-                if (isset($v1['datain_name_file']) && file_exists($_SERVER['DOCUMENT_ROOT'] . DS . '9.site' . DS . $now['folder'] . DS . 'download' . DS . 'datain' . DS . $v1['datain_name_file'])) {
+                    echo '<br/>' . __LINE__ . ' ' . $k1;
+
+                    if (isset($v1['datain_name_file']) && file_exists($_SERVER['DOCUMENT_ROOT'] . DS . '9.site' . DS . $now['folder'] . DS . 'download' . DS . 'datain' . DS . $v1['datain_name_file'])) {
 
 //                    f\pa($v1);
 //                    f\pa($amnu[$_GET['level']] );
 //                    die();
 
-                    require_once './../class.php';
+                        require_once './../class.php';
 
-                    Nyos\mod\PageData::parseFile(
-                            $_SERVER['DOCUMENT_ROOT'] . DS . '9.site' . DS . $now['folder'] . DS . 'download' . DS . 'datain' . DS . $v1['datain_name_file'], $now['folder'], $v1['cfg.level'], ( isset($v1['type_file_data']) ? $v1['type_file_data'] : null)
-                    );
+                        Nyos\mod\PageData::parseFile(
+                                $_SERVER['DOCUMENT_ROOT'] . DS . '9.site' . DS . $now['folder'] . DS . 'download' . DS . 'datain' . DS . $v1['datain_name_file'], $now['folder'], $v1['cfg.level'], ( isset($v1['type_file_data']) ? $v1['type_file_data'] : null)
+                        );
 
-                    echo '<br/>обработка файла данных прошла успешно';
-                } else {
-                    echo '<br/>файл данных не обнаружен';
+                        echo '<br/>обработка файла данных прошла успешно';
+                    } else {
+                        echo '<br/>файл данных не обнаружен';
+                    }
                 }
             }
         }
-    }
 
-    if (isset($get['action']) && $get['action'] == 'scan_new_file') {
+        if (isset($get['action']) && $get['action'] == 'scan_new_file') {
+            
+        } else {
+            die('Спасибо');
+        }
         
-    } else {
-        die('Спасибо');
+    } catch ( \Exception $exc ) {
+
+        // echo $exc->getTraceAsString();
+
+        \nyos\Msg::sendTelegramm('произошла ошибка ' . $exc->getMessage(), null, 2);
     }
 }
 
@@ -91,8 +105,8 @@ else {
     }
 
 
-    
-    
+
+
     //
     if (!empty($_REQUEST['action']) && $_REQUEST['action'] == 'remove_from_cart') {
 
@@ -106,8 +120,8 @@ else {
         }
 
         \f\end2('окей, удалили');
-    } 
-    
+    }
+
     //
     elseif (!empty($_REQUEST['action']) && ( $_REQUEST['action'] == 'shop__item_add' || $_REQUEST['action'] == 'shop__item_remove' )) {
 
@@ -123,9 +137,8 @@ else {
         }
 
         \f\end2('окей', true, ['new_kolvo' => $_SESSION['cart'][$_REQUEST['id']]['kolvo']]);
-        
-    } 
-    
+    }
+
     //
     elseif (!empty($_REQUEST['action']) && $_REQUEST['action'] == 'add_item_to_cart') {
 
@@ -145,7 +158,7 @@ else {
                 ]
         );
     }
-    
+
     if (isset($_GET['level']{0})) {
 
         require_once ( $_SERVER['DOCUMENT_ROOT'] . DS . '0.all' . DS . 'sql.start.php' );

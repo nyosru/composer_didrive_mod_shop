@@ -230,7 +230,8 @@ $function = new Twig_SimpleFunction('shop__get_items', function ( $db, $cat = nu
         // $a_id = '';
         // pse10666
         \Nyos\mod\items::$search['catNumber_search'] = \f\translit($search, 'cifru_bukvu');
-        $items = \Nyos\mod\items::get2($db, '021.items');
+        // $items = \Nyos\mod\items::get2($db, '021.items');
+        $items = \Nyos\mod\items::get($db, '021.items');
 //    echo '<br/>'.__FILE__.' '.__LINE__.' '.$search;
 //    echo '<br/>'.__FILE__.' '.__LINE__.' '.$a_id;
         // \f\pa($items);
