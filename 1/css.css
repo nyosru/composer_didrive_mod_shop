@@ -1,4 +1,21 @@
 
+.menu2_block{
+    xbackground-color: rgba(0,0,0,0.1);
+    font-size: 14px;
+}
+.item_menu2{
+    display: block;
+    padding: 3px 5px;
+    background-color: rgba(102,102,255,0.1);
+    margin-bottom: 1px;
+}
+.item_menu2:HOVER{
+    background-color: rgba(102,102,255,0.4);
+}
+.item_menu2.active{
+    background-color: rgb(102,102,255);
+}
+
 a.cart_item_delete{ color: rgba(255,0,0,0.2); }
 a.cart_item_delete:HOVER{ color: rgba(255,0,0,0.7); }
 

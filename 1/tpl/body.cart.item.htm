@@ -13,28 +13,32 @@
     <tr class="cart_item" item_id="{{ item.id }}" >
 
         <td class="product-thumbnail hidden-xs">
-            {%  set img_item = search_img( items_in_cart[item.id] ) %}
-            {#<a href="#"><img src="img/checkout/product-1.jpg" alt="images" class="img-responsive"></a>#}
-            <img src="{% if img_item|length > 5 %}{{ img_item }}{% else %}{{ sd }}photo_no.jpg{% endif %}" alt="images" class="img-responsive">
+            {% if item.a_arrayimage is not empty %}
+            {% set img1 = search_img(item.a_arrayimage) %}
+            {% else %}
+            {% set img1 = false %}
+            {% endif %}
+            {#{{ img1 }}#}
+            <img src="{% if img1 != false %}{{ img1 }}{% else %}{{ sd }}photo_no.jpg{% endif %}" alt="images" class="img-responsive">
         </td>
         <td class="product-name">
 
             {#<a href="#">{{ item.name }}</a>#}
-            {{ item.name }}
+            {{ item.head }}
 
             <input type="hidden" 
                    name="items[{{ item.id }}]"
-                   value="{{ item.name }}" 
+                   value="{{ item.head }}" 
                    />
 
         </td>
         <td class="product-price">
 
-            <p class="price" id="price{{ item.id}}" price="{{ items_in_cart[item.id]['a_price'] ? items_in_cart[item.id]['a_price'] : 0 }}" >{{ items_in_cart[item.id]['a_price'] ? items_in_cart[item.id]['a_price']|number_format(2,',','`') : '- - -' }}</p>
+            <p class="price" id="price{{ item.id}}" price="{{ item.a_price }}" >{% if item.a_price > 0 %}{{ item.a_price|number_format(2,',','`') }}{% else %}- - -{% endif %}</p>
             <input 
                 type="hidden" 
                 name="price[{{ item.id }}]"
-                value="{{ items_in_cart[item.id]['a_price'] ? items_in_cart[item.id]['a_price'] : 0 }}" 
+                value="{% if item.a_price > 0 %}{{ item.a_price }}{% else %}0{% endif %}" 
                 />
 
         </td>
@@ -69,7 +73,7 @@
 
                        min="0" max="999" step="1" 
                        name="quantity[{{ item.id }}]"
-                       value="{{ item.kolvo }}" 
+                       value="{% if item.kolvo is not empty and item.kolvo >= 0 %}{{ item.kolvo }}{% else %}0{% endif %}" 
                        size="1" 
                        class="form-control"
                        >
@@ -97,7 +101,16 @@
     </center>
         </td>
         <td class="product-price xproduct-subtotal hidden-xs">
-            <p id="summa{{ item.id }}" >{{ items_in_cart[item.id]['a_price'] ? ( items_in_cart[item.id]['a_price'] * item.kolvo )|number_format(2,',','`') : 'обозначим при заказе' }}</p>
+            <p id="summa{{ item.id }}" >
+                {% if item.a_price > 0 %}
+                    {% if item.kolvo > 0 %}
+                    {{ item.a_price }}
+                    {% else %}
+                        -
+                    {% endif %}
+                {% else %}обозначим при заказе{% endif %}
+                {#{{ items_in_cart[item.id]['a_price'] ? ( items_in_cart[item.id]['a_price'] * item.kolvo )|number_format(2,',','`') : 'обозначим при заказе' }}#}
+            </p>
         </td>
         <td class="product-price xproduct-subtotal">
             <a href="/index.php?delete_from_cart={{ item.id }}" class="cart_item_delete" title="убрать позицию из заказа" onclick="return confirm('убрать позицию из заказа ?'); " ><span class="fa fa-remove"></span></a>

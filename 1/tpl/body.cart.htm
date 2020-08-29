@@ -4,11 +4,11 @@
 
     <div class="container checkout-cart-form">
 
-        {% if warn_order is defined %}
+        {% if get.warn_order is defined %}
 
             <div class="row">
-                <div class="col-md-12 col-sm-12">
-                    <div class="bg-warning" style="padding: 10px 20px;">{{ warn_order }}</div>
+                <div class="col-md-12 col-sm-12 text-center">
+                    <h3 class="bg-warning" style="padding: 10px 20px;">{{ get.warn_order }}</h3>
                 </div>
             </div>
         {% else %}
@@ -33,6 +33,8 @@
 
                                 {%  for k,item in session.cart %}
 
+                                    {#{{ pa(item) }}#}
+                                    
                                     {% include constant('dir_mods_mod_vers_tpl')~'body.cart.item.htm' %}
                                     {% set summa = summa + ( ( items_in_cart[item.id]['a_price'] ? items_in_cart[item.id]['a_price'] :  0 ) * item.kolvo ) %}
                                     {#                            {% if item.price is defined and item.price > 0 and item.kolvo is defined and item.kolvo > 0 %}

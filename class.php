@@ -38,10 +38,12 @@ class Shop {
         self::$imgs = [];
 
         foreach ($scan as $v) {
-            if (!isset($v{3}))
+
+            if ( empty($v) || $v == '.' || $v == '..' )
                 continue;
 
             $img01 = strtolower($v);
+
             if ($img01 != $v)
                 rename(DR . self::$photo_dir . $v, DR . self::$photo_dir . $img01);
 
@@ -51,6 +53,7 @@ class Shop {
         \f\Cash::setVar('list_items_photo', self::$imgs, 3600);
         return;
         // \f\pa(\f\timer_stop(1));
+
     }
 
     public static function getImg($img) {

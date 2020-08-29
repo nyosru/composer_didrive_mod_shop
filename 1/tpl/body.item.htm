@@ -6,16 +6,24 @@
         {{ pa(item.cat_id) }}
     {% endif %}
 
-    <div class="col-xs-6 col-sm-6 col-md-4 {% if show_menu2 == true %}col-xl-4 col-lg-3{% else %}col-xl-3 col-lg-2{% endif %} xproduct-list-item">
-
+    <div class="col-xs-6 col-sm-6 col-md-4 {% if nav_cat_down.in is defined and nav_cat_down.in|length > 0 %}col-xl-4 col-lg-3{% else %}col-xl-3 col-lg-2{% endif %} xproduct-list-item">
+    {#<div class="col-xs-6 col-sm-6 col-md-4 col-xl-3 col-lg-2">#}
         <div class="product-item-img">
-            {% set img1 = search_img(item) %}
+
+            {% if item.a_arrayimage is not empty %}
+                {% set img1 = search_img(item.a_arrayimage) %}
+            {% else %}
+                {% set img1 = false %}
+            {% endif %}
+
             {# <a href="#"><img src="img/products/product1.png" alt="images" class="img-responsive"></a> #}
-            {#<a href="#">#}<img 
+            {#<a href="#">#}
+            <img 
                 src="{% if img1 != false %}{{ img1 }}{% else %}{{ sd }}photo_no.jpg{% endif %}" alt="images" class="img-responsive"
                 style="width:100%; max-width: 250px; max-height: 140px;"
                 >{#</a>#}
             {#<div class="label label-2 red label-top-20">Hot</div>#}
+
         </div>
 
         <div class="product-item-info">
@@ -39,7 +47,7 @@
 
             <div class="prod-price">
                 <span class="price color-gray">
-                    {% if item.a_price is defined %}
+                    {% if item.a_price is defined and item.a_price is not empty and item.a_price != 0 %}
                         {{ item.a_price|number_format(0,'.','`') }} ₽
                     {% else %}
                         под заказ
@@ -68,10 +76,13 @@
 
                             action="add_item_to_cart"
 
-                            aj_id ="{{ item.id }}"
-                            aj_name ="{{ item.head }}"
-                            aj_price ="{{ item.a_price }}"
+                            {%  for k3,v3 in item %}
+                                aj_{{ k3 }} ="{{ v3 }}"
+                            {% endfor %}
+                            {#aj_name ="{{ item.head }}"#}
+                            {#aj_price ="{{ item.a_price }}"#}
                             aj_kolvo ="1"
+                            {#aj_img ="{% if item.a_arrayimage is not empty %}{{ item.a_arrayimage }}{% endif %}"#}
 
                             id ="{{ item.head ~ item.a_price ~'1' }}"
                             s ="{{ creatSecret( item.head ~ item.a_price ~'1' ) }}"

@@ -128,15 +128,21 @@ else {
         if (isset($_SESSION['cart'][$_REQUEST['id']]['kolvo'])) {
 
             if ($_REQUEST['action'] == 'shop__item_add') {
+                
+                if( empty($_SESSION['cart'][$_REQUEST['id']]['kolvo']) ){
+                $_SESSION['cart'][$_REQUEST['id']]['kolvo'] = 1;
+                }else{
                 $_SESSION['cart'][$_REQUEST['id']]['kolvo'] ++;
+                }
+                
             } elseif ($_REQUEST['action'] == 'shop__item_remove') {
 
-                if ($_SESSION['cart'][$_REQUEST['id']]['kolvo'] > 0)
+                if ( !empty($_SESSION['cart'][$_REQUEST['id']]['kolvo']) && $_SESSION['cart'][$_REQUEST['id']]['kolvo'] > 0)
                     $_SESSION['cart'][$_REQUEST['id']]['kolvo'] --;
             }
         }
 
-        \f\end2('окей', true, ['new_kolvo' => $_SESSION['cart'][$_REQUEST['id']]['kolvo']]);
+        \f\end2('окей', true, [ 'new_kolvo' => $_SESSION['cart'][$_REQUEST['id']]['kolvo'] ]);
     }
 
     //
