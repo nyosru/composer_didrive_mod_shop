@@ -49,14 +49,12 @@ $function = new Twig_SimpleFunction('shop__get_nav_cats_down', function ( $db, $
 //            . ' c1r.head cat1r_head, '
 //            . ' c2r.a_id cat2r , '
 //            . ' c2r.head cat2r_head '
-            
 //            . ' c5.a_id cat5 , '
 //            . ' c5.head cat5_head '
             // . ', c6.a_id cat6 '
-            
             . ' FROM mod_' . \f\translit(\Nyos\mod\parsing_xml1c::$mod_cats, 'uri2') . ' c1 '
             . ' LEFT JOIN mod_' . \f\translit(\Nyos\mod\parsing_xml1c::$mod_cats, 'uri2') . ' c2 ON c1.a_id = c2.a_parentid '
-            
+
 //            . ' LEFT JOIN mod_' . \f\translit(\Nyos\mod\parsing_xml1c::$mod_cats, 'uri2') . ' c1r ON c1r.a_parentid = c1.a_parentid '
 //            . ' LEFT JOIN mod_' . \f\translit(\Nyos\mod\parsing_xml1c::$mod_cats, 'uri2') . ' c2r ON c1r.a_id = c2r.a_parentid '
 //            
@@ -66,21 +64,18 @@ $function = new Twig_SimpleFunction('shop__get_nav_cats_down', function ( $db, $
 
     $ff = $db->prepare($sql);
     $ff->execute([':cat' => $cat_id]);
-    
+
     $re = [];
-    
-    while( $r = $ff->fetch() ){
-        
+
+    while ($r = $ff->fetch()) {
+
         $re['head'] = $r['cat1_head'];
-        
-        if( !empty($r['cat2']) )
-        $re['in'][$r['cat2']] = $r['cat2_head'];
-        
+
+        if (!empty($r['cat2']))
+            $re['in'][$r['cat2']] = $r['cat2_head'];
     }
-    
-    return $re ;
-    
-    
+
+    return $re;
 });
 $twig->addFunction($function);
 
@@ -136,8 +131,13 @@ $function = new Twig_SimpleFunction('search_img', function ( $item ) {
     if (empty($item))
         return false;
 
-    if (file_exists(DR . 'sites' . DS . \Nyos\Nyos::$folder_now . DS . 'download' . DS . 'photo' . DS . strtolower($item) . '.jpg'))
+    if (file_exists(DR . DS . 'sites' . DS . \Nyos\Nyos::$folder_now . DS . 'download' . DS . 'photo' . DS . strtolower($item) . '.jpg')) {
         return '/sites/' . \Nyos\Nyos::$folder_now . '/download' . DS . 'photo' . DS . strtolower($item) . '.jpg';
+    } elseif (file_exists(DR . DS . 'sites' . DS . \Nyos\Nyos::$folder_now . DS . 'download' . DS . 'photo' . DS . strtolower($item))) {
+        return '/sites/' . \Nyos\Nyos::$folder_now . '/download' . DS . 'photo' . DS . strtolower($item);
+    } elseif (file_exists(DR . DS . 'sites' . DS . \Nyos\Nyos::$folder_now . DS . 'download' . DS . 'photo' . DS . $item)) {
+        return '/sites/' . \Nyos\Nyos::$folder_now . '/download' . DS . 'photo' . DS . $item;
+    }
 
     if (!empty($item['a_catNumber']))
         return \Nyos\mod\Shop::getImg($item['a_catNumber']);
@@ -181,29 +181,43 @@ function search_cat_inner(array $cats_ar, $now_cat = null, $id_cat = null) {
 }
 
 $function = new Twig_SimpleFunction('shop__get_items', function ( $db, $cat = null, $a_id = null, $search = '' ) {
-    
+
+    // \f\pa( [ $cat , $a_id , $search ] );
+
     if (!empty($cat)) {
+
+        $mod_db_cat = 'mod_' . \f\translit(\Nyos\mod\parsing_xml1c::$mod_cats, 'uri2');
 
         $sql = 'SELECT c1.a_id cat1, c2.a_id cat2, c3.a_id cat3, c4.a_id cat4 , c5.a_id cat5 '
                 // . ', c6.a_id cat6 '
-                . ' FROM mod_' . \f\translit(\Nyos\mod\parsing_xml1c::$mod_cats, 'uri2') . ' c1 '
-                . ' LEFT JOIN mod_' . \f\translit(\Nyos\mod\parsing_xml1c::$mod_cats, 'uri2') . ' c2 ON c1.a_id = c2.a_parentid '
-                . ' LEFT JOIN mod_' . \f\translit(\Nyos\mod\parsing_xml1c::$mod_cats, 'uri2') . ' c3 ON c3.a_parentid = c2.a_id  '
-                . ' LEFT JOIN mod_' . \f\translit(\Nyos\mod\parsing_xml1c::$mod_cats, 'uri2') . ' c4 ON c4.a_parentid = c3.a_id  '
-                . ' LEFT JOIN mod_' . \f\translit(\Nyos\mod\parsing_xml1c::$mod_cats, 'uri2') . ' c5 ON c5.a_parentid = c4.a_id  '
+                . ' FROM ' . $mod_db_cat . ' c1 '
+                . PHP_EOL
+                . ' LEFT JOIN ' . $mod_db_cat . ' c2 ON c1.a_id = c2.a_parentid '
+                . PHP_EOL
+                . ' LEFT JOIN ' . $mod_db_cat . ' c3 ON c3.a_parentid = c2.a_id  '
+                . PHP_EOL
+                . ' LEFT JOIN ' . $mod_db_cat . ' c4 ON c4.a_parentid = c3.a_id  '
+                . PHP_EOL
+                . ' LEFT JOIN ' . $mod_db_cat . ' c5 ON c5.a_parentid = c4.a_id  '
 //                 . ' LEFT JOIN mod_'.\f\translit( \Nyos\mod\parsing_xml1c::$mod_cats , 'uri2').' c6 ON c6.a_parentid = c5.a_id  '
+                . PHP_EOL
                 . ' WHERE c1.a_id = :cat ';
+        // \f\pa($sql);
+        // echo '<pre>'.$sql.'</pre>';
+
         $ff = $db->prepare($sql);
         $ff->execute([':cat' => $cat]);
         $cats0 = [];
         while ($r = $ff->fetch()) {
             for ($e = 1; $e <= 5; $e++) {
-                if (!isset($cats0[$r['cat' . $e]])) {
+                if (empty($cats0[$r['cat' . $e]]) && !empty($r['cat' . $e])) {
                     $cats0[$r['cat' . $e]] = 1;
                     \Nyos\mod\items::$search['a_categoryid'][] = $r['cat' . $e];
                 }
             }
         }
+
+        // \f\pa(\Nyos\mod\items::$search['a_categoryid']);
     }
 
     if (!empty($search)) {
@@ -223,7 +237,7 @@ $function = new Twig_SimpleFunction('shop__get_items', function ( $db, $cat = nu
     if (empty($_REQUEST['search']) && !isset($_REQUEST['option']) || ( isset($_REQUEST['option']) && $_REQUEST['option'] == 'index' ))
         \Nyos\mod\items::$sql_limit = 40;
 
-    //\Nyos\mod\items::$show_sql = true;
+    // \Nyos\mod\items::$show_sql = true;
     $items = \Nyos\mod\items::get($db, '021.items');
     // ищем по каталожному номеру
     if (empty($items)) {

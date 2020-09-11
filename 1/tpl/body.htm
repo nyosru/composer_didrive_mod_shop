@@ -3,7 +3,7 @@
     {% if get.option is defined and get.option == 'cart' %}
 
         {% set items_in_cart = shop__get_items_from_cart(db)  %}
-        {#{{ pa(items_in_cart) }}#}
+        {#pa(items_in_cart,2) {{ pa(items_in_cart,2) }}#}
 
         {% include constant('dir_mods_mod_vers_tpl')~'body.cart.htm' %}
 
@@ -12,7 +12,7 @@
         {# config #}
 
         {% set items = shop__get_items(db, get.option, '', ( get.search ?? '' ) )  %}
-        {#{{ pa(items,2) }}#}
+        {#pa(items,2) {{ pa(items,2) }}#}
 
         {% set on1page = 23 %}
         {% set page_now = ( get.ext1 ?? get.page ?? 1 ) %}

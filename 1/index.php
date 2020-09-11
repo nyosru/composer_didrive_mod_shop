@@ -25,6 +25,7 @@ if (isset($_POST['io']) && isset($_POST['phone']) && isset($_POST['items'])) {
 
     $msg .= PHP_EOL . PHP_EOL . 'Итого: ' . number_format($summa, '0', '.', '`') . ' р';
     \nyos\Msg::sendTelegramm($msg, null, 2);
+    
     $_SESSION['cart'] = [];
     \f\redirect('/', 'index.php', ['level' => 'show', 'option' => 'cart', 'warn_order' => 'Заказ принят, спасибо']);
 }
