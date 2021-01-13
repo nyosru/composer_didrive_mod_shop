@@ -17,7 +17,12 @@ class Shop {
      */
     public static $imgs = null;
     public static $photo_dir = '';
+    
+    public static $mod_cats = '';
+    public static $mod_items = '021.items';
 
+    
+    
     public static function getListImg() {
 
         \f\timer_start(1);
@@ -38,12 +43,10 @@ class Shop {
         self::$imgs = [];
 
         foreach ($scan as $v) {
-
-            if ( empty($v) || $v == '.' || $v == '..' )
+            if (!isset($v{3}))
                 continue;
 
             $img01 = strtolower($v);
-
             if ($img01 != $v)
                 rename(DR . self::$photo_dir . $v, DR . self::$photo_dir . $img01);
 
@@ -53,7 +56,6 @@ class Shop {
         \f\Cash::setVar('list_items_photo', self::$imgs, 3600);
         return;
         // \f\pa(\f\timer_stop(1));
-
     }
 
     public static function getImg($img) {
