@@ -1,40 +1,83 @@
 {% spaceless %}
 
-    <div class="row">
-        <div class="col-xs-12 col-xl-12 ">
-            <div style="padding: 15px 10px;">
+    <div class="widget-product-list">
+        <div class="row">
 
-                {%  set nav = get_cats_nav( db, ( get.option ?? null ) ) %}
-                {#{ pa( nav )  }#}
-                {#{ pa(cats) }#}
+            <div class="col">
 
+                {# верхняя строчка списка итемов #}
+                {% if 1 == 1 %}
+                    <div xclass="filter-block bd">
 
-                <ol class="breadcrumb">
+                        <div class="row" style="padding-top: 2vh; padding-bottom: 1vh;">
 
-                    {#
-                  <li class="breadcrumb-item"><a href="#">Home</a></li>
-                  <li class="breadcrumb-item"><a href="#">Library</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Data</li>
-                      #}
+                            <div class="{% if get.ext1 is defined and get.ext1 == 'item' %}col{% else %}col-xs-12 col-md-10{% endif %}" style="padding-left:5%;" >
 
-                    {% set nn = 1 %}
+                                {#----- {{ get.option }} -----#}
+                                {% set nav_cat = shop__get_nav_cats(db, get.option) %}
+                                {#<div style="border: 1px solid green; padding: 10px;" >
+                                {{ pa(nav_cat) }}
+                                </div>#}
 
-                    {% for k,v in nav %}
+                                {#<ul class="other-link-sub xpull-right">#}
 
-                        {% if nn != 1 %}
+                                {#<nav aria-label="breadcrumb">
+                                  <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Library</li>
+                                  </ol>
+                                </nav>                                            #}
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">                                          
+                                        {% if server.HTTP_HOST == 'avto-as.ru' %}
+                                            <li >
+                                                <a href="/show/">Авто-АС</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="breadcrumb-item" >
+                                                <a href="/{{ get.level }}/">Каталог</a>
+                                            </li>
+                                        {% endif %}
 
-                            <li class="xbreadcrumb-item"><a href="/show/{{ v.id }}/">{{ v.head }}</a></li>
-                                {# <span class="fa fa-angle-right"></span>&nbsp;<a href="/show/{{ v.id }}/" >{{ v.head }}</a>&nbsp; &nbsp; #}
+                                        {% if nav_cat != false %}
 
-                        {% endif %}
+                                            {% for k in 5..1 if nav_cat['cat'~k] is not empty and nav_cat['cat'~k] != '00000126' %}
+                                                {#{{ nav_cat['cat'~k] }}#}
+                                                <li class="breadcrumb-item" >
+                                                    <a href="/{{ get.level }}/{{ nav_cat['cat'~k] }}/">{{ nav_cat['cat'~k~'_head'] }}</a>
+                                                </li>
+                                            {% endfor %}
 
-                        {% set nn = nn+1 %}
+                                        {% endif %}
 
-                    {% endfor %}
+                                        {#<li><a class="active" href="#shop">Shop</a></li>#}
 
-                </ol>
+                                    </ol>
+                                </nav>
+
+                            </div>
+
+                            {#{{  get.search }}#}
+
+                            {% if get.ext1 is defined and get.ext1 == 'item' %}
+                            {% else %}
+                                {% if get.search is defined or get.option is defined %}
+                                    <div class="col-md-2 hidden-xs">
+                                        <div class="box box-view pull-right" style="padding-right:5%; font: 14px/36px 'Open Sans', sans-serif;">
+                                            <span>Товары {{ show_on }}–{% if items|length < show_off %}{{ items|length }}{% else %}{{ show_off }}{% endif %} из {{ items|length }}</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
 
             </div>
+
         </div>
     </div>
 

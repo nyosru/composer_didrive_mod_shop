@@ -1,0 +1,42 @@
+{% spaceless %}
+
+    <div class="row">
+        <div class="col-xs-12 col-xl-12 ">
+            <div style="padding: 15px 10px;">
+
+                {%  set nav = get_cats_nav( db, ( get.option ?? null ) ) %}
+                {#{ pa( nav )  }#}
+                {#{ pa(cats) }#}
+
+
+                <ol class="breadcrumb">
+
+                    {#
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item"><a href="#">Library</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Data</li>
+                      #}
+
+                    {% set nn = 1 %}
+
+                    {% for k,v in nav %}
+
+                        {% if nn != 1 %}
+
+                            <li class="xbreadcrumb-item"><a href="/show/{{ v.id }}/">{{ v.head }}</a></li>
+                                {# <span class="fa fa-angle-right"></span>&nbsp;<a href="/show/{{ v.id }}/" >{{ v.head }}</a>&nbsp; &nbsp; #}
+
+                        {% endif %}
+
+                        {% set nn = nn+1 %}
+
+                    {% endfor %}
+
+                </ol>
+
+            </div>
+        </div>
+    </div>
+
+
+{% endspaceless %}

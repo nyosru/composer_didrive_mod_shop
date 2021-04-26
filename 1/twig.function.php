@@ -13,33 +13,72 @@ $function = new Twig_SimpleFunction('shop__get_nav_cats', function ( $db, $cat_i
 
     $nav_cat = [];
 
-    $cats0 = \Nyos\mod\items::get($db, '020.cats');
-    // \f\pa($cats0, 2);
+    // $cats0 = \Nyos\mod\items::get($db, '020.cats');
+    $cats0 = \Nyos\mod\items::get($db, \Nyos\mod\Shop::$mod_cats, 'show', 'id_id');
+    //\f\pa($cats0, 2);
+
+    $type = ''; // 'cat_up' || 'a_parentId'
+
+    $nn = 1;
 
     for ($i = 0; $i <= 10; $i++) {
 
         if ($i == 0) {
+
             if (isset($cats0[$cat_id])) {
 
-                $nav_cat[$i] = $cats0[$cat_id];
-                $next = $cats0[$cat_id]['a_parentId'];
+                if (!empty($cats0[$cat_id]['a_parentId'])) {
+                    $next = $cats0[$cat_id]['a_parentId'];
+                    $type = 'a_parentId';
+                    $nav_cat[$i] = $cats0[$cat_id];
+                } else if (!empty($cats0[$cat_id]['cat_up'])) {
+                    $next = $cats0[$cat_id]['cat_up'];
+                    $type = 'cat_up';
+//                    $nav_cat['cat'.$nn] = $cats0[$cat_id];
+                    $nav_cat['cat' . $nn] = $cats0[$cat_id]['id'];
+                    $nav_cat['cat' . $nn . '_head'] = $cats0[$cat_id]['head'];
+                    $nn++;
+                } else if (empty($cats0[$cat_id]['cat_up']) && !empty($cats0[$cat_id]['cat_id'])) {
+//                    $next = $cats0[$cat_id]['cat_up'];
+                    $type = 'cat_up';
+//                    $nav_cat['cat'.$nn] = $cats0[$cat_id];
+                    $nav_cat['cat' . $nn] = $cats0[$cat_id]['id'];
+                    $nav_cat['cat' . $nn . '_head'] = $cats0[$cat_id]['head'];
+                    $nn++;
+                }
             } else {
                 break;
             }
         } else {
 
-            $e = \f\find_array($cats0, 'a_id', $next);
-            // \f\pa($e);
+            if ($type == 'a_parentId') {
+                $e = \f\find_array($cats0, 'a_id', $next);
+                // \f\pa($e);
 
-            if ($e === false || !isset($e['a_parentId']))
-                break;
+                if ($e === false || !isset($e['a_parentId']))
+                    break;
 
-            $nav_cat[] = $e;
-            $next = $e['a_parentId'];
+                $nav_cat[] = $e;
+                $next = $e['a_parentId'];
+            }
+
+            //
+            else if ($type == 'cat_up' && !empty($next)) {
+                $e = \f\find_array($cats0, 'cat_id', $next);
+                // \f\pa($e);
+
+                if ($e === false || !isset($e['cat_up']))
+                    break;
+
+                $nav_cat['cat' . $nn] = $e['id'];
+                $nav_cat['cat' . $nn . '_head'] = $e['head'];
+                $nn++;
+                $next = $e['cat_up'];
+            }
         }
     }
 
-    krsort($nav_cat);
+    // krsort($nav_cat);
     return !empty($nav_cat) ? $nav_cat : false;
 });
 $twig->addFunction($function);
@@ -95,6 +134,49 @@ $function = new Twig_SimpleFunction('get_cats_nav', function ( $db, $cat_now = n
 });
 $twig->addFunction($function);
 
+
+
+$function = new Twig_SimpleFunction('shop__get_nav_cats_down', function ( $db, $cat_now ) {
+
+    $cats0 = \Nyos\mod\items::get($db, \Nyos\mod\Shop::$mod_cats, 'show', 'sort');
+
+    //\f\pa($cats0,2,'','$cats0');
+    // echo '<br/>222-'.$cat_now;
+    //\f\pa($cat_now,'','','shop__get_nav_cats_down');
+    // \f\pa($cat_now,'','','shop__get_nav_cats_down');
+
+    $return = ['in' => []];
+
+    if (empty($cat_now)) {
+
+        foreach ($cats0 as $k => $v) {
+            if (empty($v['cat_up'])) {
+                $return['in'][$v['id']] = $v['head'];
+            }
+        }
+    } else {
+
+        $up_key = array_search($cat_now, array_column($cats0, 'id'));
+
+        if (empty($up_key))
+            return ['in' => []];
+
+        $cat_key = $cats0[$up_key]['cat_id'];
+        // echo '<br/>333 - '.$up_key.' '.$cat_key;
+
+        foreach ($cats0 as $k => $v) {
+            if (!empty($v['cat_up']) && $v['cat_up'] == $cat_key) {
+                $return['in'][] = ['id' => $v['id'], 'head' => $v['head']];
+            }
+        }
+    }
+
+    return $return;
+});
+$twig->addFunction($function);
+
+
+
 $function = new Twig_SimpleFunction('search_img', function ( $item ) {
 
     if (empty($item))
@@ -124,7 +206,7 @@ function search_cat_inner(array $cats_ar, $now_cat = null, $id_cat = null) {
 
     $return = [];
 
-    if (empty($id_cat) && !empty($now_cat) && isset($cats_ar[$now_cat])) {
+    if (empty($id_cat) && isset($cats_ar[$now_cat]['a_id'])) {
         $id_cat = $cats_ar[$now_cat]['a_id'];
     }
 
@@ -141,17 +223,91 @@ function search_cat_inner(array $cats_ar, $now_cat = null, $id_cat = null) {
             if (!empty($re)) {
                 $return = array_merge($return, $re);
             }
+        } else if (isset($v['cat_id']) && $v['cat_id'] == $id_cat) {
+
+            $return[$v['cat_id']] = $v['id'];
+
+            $re = search_cat_inner($cats_ar, null, $v['cat_id']);
+
+            if (!empty($re)) {
+                $return = array_merge($return, $re);
+            }
         }
     }
 
     return $return;
 }
 
+$function = new Twig_SimpleFunction('shop__getPhotoArticuls', function ( $dir = 'import' ) {
+    return \Nyos\mod\Shop::getPhotoArticuls($dir);
+});
+$twig->addFunction($function);
+
+$function = new Twig_SimpleFunction('shop__getItem', function ( $db, $id_item = null ) {
+
+    if (empty($id_item))
+        return false;
+
+    \Nyos\mod\items::$search['id'] = (int) $id_item;
+    \Nyos\mod\items::$sql_limit = 1;
+    // $items = \Nyos\mod\items::get($db, '021.items');
+    $items = \Nyos\mod\items::get($db, \Nyos\mod\Shop::$mod_items);
+
+    if (isset($items[0])) {
+        \Nyos\mod\items::$search['item_id'] = (int) $id_item;
+        // \Nyos\mod\items::$sql_select_vars = ['item_id','head','value'];
+        \Nyos\mod\items::$sql_select_vars = ['head', 'value'];
+        $items[0]['props'] = \Nyos\mod\items::get($db, \Nyos\api\API_1C::$mod_items_props);
+        // \f\pa($jj);
+    }
+
+    return $items[0] ?? false;
+});
+$twig->addFunction($function);
+
+
+
+$function = new Twig_SimpleFunction('shop__get_items_start', function ( $db ) {
+
+    // $return = [];
+    
+    // \Nyos\mod\items::$search['id'] = (int) $id_item;
+    \Nyos\mod\items::$type_module = 3;
+    // \Nyos\mod\items::$show_sql = true;
+    \Nyos\mod\items::$sql_limit = ' 0,40 ';
+    \Nyos\mod\items::$where_add = ' AND items.price2 > 0 '
+            .' AND items.price > 0 ';
+    \Nyos\mod\items::$sql_select_vars = [
+        ' items.id ',
+        ' items.head ',
+        ' items.art ',
+        ' items.item_id ',
+        ' cats.id cat_id_id ',
+        ' items.price ',
+        ' items.price2 '
+        ];
+    // $items = \Nyos\mod\items::get($db, '021.items');
+    \Nyos\mod\items::$joins = ' INNER JOIN mod_010_catalog_cats cats ON items.cat_id = cats.cat_id ';
+    
+    return \Nyos\mod\items::get( $db, \Nyos\mod\Shop::$mod_items );
+
+    // die();
+    // return $return ;
+});
+$twig->addFunction($function);
+
+
+
 $function = new Twig_SimpleFunction('shop__get_items', function ( $db, $cat = null, $a_id = null, $search = '' ) {
 
-    $cats0 = \Nyos\mod\items::get($db, '020.cats');
+    if (strpos($_SERVER['HTTP_HOST'], 'avto-as.ru') === false && strpos($_SERVER['HTTP_HOST'], 'avtoas') === false) {
+        return \Nyos\mod\Shop::getItemsNow($db, $cat, (!empty($search) ? explode(' ', strtolower($search)) : []));
+    }
+
+    $cats0 = \Nyos\mod\items::get($db, \Nyos\mod\Shop::$mod_cats, 'show', 'id_id');
     // $cats = cat2cat($cats0);
-    // \f\pa($cat, 2, '', 'cat');
+    // \f\pa($cats0, 2, '', 'cat');
+
     $cat_now = $cats0[$cat] ?? null;
     // \f\pa($cat_now, 2, '', 'cat_now');
     // \f\pa($cats0, 2, '', 'cats0');
@@ -200,28 +356,37 @@ $function = new Twig_SimpleFunction('shop__get_items', function ( $db, $cat = nu
 
     if (!empty($search)) {
 
-        $s0 = explode(' ', $search);
-        if (sizeof($s0) > 1) {
+        if ($search == 'start_vitrin') {
 
-            $ns = 1;
-
-            foreach ($s0 as $kk => $vv) {
-                if (!empty($vv)) {
-                    \Nyos\mod\items::$where2 .= ' AND mi.head LIKE :ss' . $ns . ' ';
-                    // \Nyos\mod\items::$where2 .= ' AND mi.head = :ss ';
-                    \Nyos\mod\items::$var_ar_for_1sql[':ss' . $ns] = '%' . $vv . '%';
-                    $ns++;
-                }
-            }
+            \Nyos\mod\items::$where2 .= ' AND mi.price2 IS NOT NULL ';
+            
         } else {
-            \Nyos\mod\items::$where2 .= ' AND mi.head LIKE :ss ';
-            // \Nyos\mod\items::$where2 .= ' AND mi.head = :ss ';
-            \Nyos\mod\items::$var_ar_for_1sql[':ss'] = '%' . $search . '%';
+
+            $s0 = explode(' ', $search);
+            if (sizeof($s0) > 1) {
+
+                $ns = 1;
+
+                foreach ($s0 as $kk => $vv) {
+                    if (!empty($vv)) {
+                        \Nyos\mod\items::$where2 .= ' AND mi.head LIKE :ss' . $ns . ' ';
+                        // \Nyos\mod\items::$where2 .= ' AND mi.head = :ss ';
+                        \Nyos\mod\items::$var_ar_for_1sql[':ss' . $ns] = '%' . $vv . '%';
+                        $ns++;
+                    }
+                }
+            } else {
+                \Nyos\mod\items::$where2 .= ' AND mi.head LIKE :ss ';
+                // \Nyos\mod\items::$where2 .= ' AND mi.head = :ss ';
+                \Nyos\mod\items::$var_ar_for_1sql[':ss'] = '%' . $search . '%';
+            }
+            
         }
     }
 
     // \Nyos\mod\items::$show_sql = true;
-    $items = \Nyos\mod\items::get($db, '021.items');
+    // $items = \Nyos\mod\items::get($db, '021.items');
+    $items = \Nyos\mod\items::get($db, \Nyos\mod\Shop::$mod_items);
     // \f\pa($items,2,'','items1');
     // die();
     // ищем по каталожному номеру
@@ -256,16 +421,18 @@ $twig->addFunction($function);
  */
 $function = new Twig_SimpleFunction('shop__get_items_from_cart', function ( $db ) {
 
+    \f\pa($_SESSION, 2, '', 'session');
+
     if (!empty($_SESSION['cart']) && sizeof($_SESSION['cart']) > 0) {
 
         //\Nyos\mod\items::$show_sql = true;
         \Nyos\mod\items::$search['id'] = array_keys($_SESSION['cart']);
         // $items = \Nyos\mod\items::get($db, '021.items');
-        $items = \Nyos\mod\items::get($db, \Nyos\mod\Shop::$mod_items );
+        $items = \Nyos\mod\items::get($db, \Nyos\mod\Shop::$mod_items);
 
         return $items;
-
     } else {
+
         return false;
     }
 });

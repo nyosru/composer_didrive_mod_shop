@@ -1,0 +1,275 @@
+{% spaceless %}
+
+    <div class='row' >
+        {#<tr class="tr_item">#}
+
+        {#22222222#}
+
+        {% if 1 == 2 %}
+            {{ pa(item) }}
+            {{ pa(get.option) }}
+            {{ pa(item.cat_id) }}
+        {% endif %}
+
+
+        {#<td class="product-item-info">#}
+        <div class="col-12 col-lg-7 product-item-info">
+
+            <div class="item_name_vitrin_resize" >
+                <h3 class="item_name_vitrin" >
+
+                    {% if photos[item.art][0]['show'] is defined %}
+                        <a href="/{{ get.level }}/{{ item.cat_id_id }}/item/{{ item.id }}/{{ f__translit(item.head,'uri2')|slice(0, 20) }}/" 
+                           {#xonclick="return false;"#} 
+                           title="{{ item.head|e }}" 
+                           {#class="black"#} 
+                           style="float:left; padding-right: 2em;"
+                           >
+                            <img id="img{{ item.id }}" 
+                                 src="/di-img/min/150/{{ photos[item.art][0]['show'] }}" 
+                                 data-zoom-image="/di-img/min/800/{{ photos[item.art][0]['show'] }}"
+                                 style="max-width: 150px; max-height: 120px;" 
+                                 alt="" border="0" 
+                                 />
+                            {#<img id="zoom_01" src='images/small/image1.png' data-zoom-image="images/large/image1.jpg"/>#}
+                        </a>
+
+                        {#{% if 1 == 2 %}
+                            <script>
+                                $(document).ready(function () {
+                                    $('#img{{ item.id }}').elevateZoom({tint: true, tintColour: '#F90', tintOpacity: 0.5});
+                                });
+                            </script>
+                        {% endif %}#}
+
+                    {% endif %}
+
+                    <a href="/{{ get.level }}/{{ item.cat_id_id }}/item/{{ item.id }}/{{ f__translit(item.head,'uri2')|slice(0, 20) }}/" 
+                       {#xonclick="return false;"#} 
+                       title="{{ item.head|e }}" 
+                       {#class="black"#} 
+                       >
+                        {{ item.head|replace({'с ': 'c&nbsp;', 'для ': 'для&nbsp;'})|raw }}</a>
+
+                    {% if 
+                        ( get.option is defined and get.option == item['cat_up5_id'] )
+                        or ( get.option is defined and get.option == item['cat_up4_id'] )
+                        or ( get.option is defined and get.option == item['cat_up3_id'] )
+                        or ( get.option is defined and get.option == item['cat_up2_id'] )
+                        or ( get.option is defined and get.option == item['cat_up1_id'] )
+                    %}{% else %}
+                    <font>
+                    {% for p in range(5, 1, 1) if item['cat_up'~p] is defined and item['cat_up'~p]|length > 0 %}
+                        <a href="/{{ get.level }}/{{ item['cat_up'~p~'_id'] }}/" >{{ item['cat_up'~p] }}</a>
+                    {% endfor %}
+                    </font>
+                    {% endif %}
+
+                    </h3>
+                </div>
+
+                {#{{ pa(item,2) }}#}
+
+            </div>
+
+            {#
+            <div class="product-item-star ratingstar sm">
+                <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                <a href="#"><i class="fa fa-star-o fa-1" aria-hidden="true"></i></a>
+                <span class="number">(12)</span>
+            </div>
+            #}
+            {#<td>#}
+
+            <div class="col col-lg-1">
+                <div class="prod-price">
+                    <span class="price" ><nobr>
+
+                            {% if item.a_price is defined and item.a_price is not empty and item.a_price > 0 %}
+                                {{ item.a_price|number_format(0,'.','`') }} ₽
+                            {% elseif item.price is defined and item.price is not empty and item.price > 0 %}
+                                {{ item.price|number_format(0,'.','`') }} ₽
+                            {% else %}
+                                под заказ
+                            {% endif %}
+
+                        </nobr></span>
+                </div>
+
+            </div>
+
+            <div class="col col-lg-2">
+                <nobr class="quantity_inner">
+                    <button class="btn bt_minus" type="button" 
+                            style="color:rgb(255,100,100);" 
+                            onclick=" if( $('#qi{{ k }}').val() > 1 ){ $('#qi{{ k }}').val( + $('#qi{{ k }}').val() - 1 ); }"
+                            ><span class="fa fa-minus"></span></button>
+                    <input type="text"
+                           value="1"
+                           style="
+                           text-align: center; 
+                           width: 50px; 
+                           display: inline-block; 
+                           padding-right: 2px; 
+                           padding-left: 2px;
+                           "
+                           class="form-control quantity form-control-sm" 
+                           data-max-count="9999999999"
+                           placeholder="" 
+                           id="qi{{ k }}"
+                           />
+                    <button class="btn bt_plus" type="button" style="color:rgb(100,255,100);" onclick="$('#qi{{ k }}').val( + $('#qi{{ k }}').val() + 1 );" ><span class="fa fa-plus"></span></button>
+                </nobr>
+            </div>
+
+            <div class="col col-lg-2">
+                <div class="button-ver2">
+
+                    {#<a href="#" class="addcart-ver2" title="Add to cart"><span class="icon"></span>ADD TO CART</a>#}
+                    {#
+                    <a href="#" class="quickview" title="quick view"><i class="ion-eye fa-4" aria-hidden="true"></i></a>
+                    <a href="#" class="wishlist" title="wishlist"><i class="ion-heart fa-4" aria-hidden="true"></i></a>
+                    #}
+
+                    <center>
+
+                        <div>
+                            <button 
+
+                                class="addcart-ver2 shop__add_to_cart addToCart btn btn-sm btn-info2 norm" 
+                                style="
+                                width: auto; 
+                                {#xdisplay: inline-block;#}
+                                {#xmargin:0 auto;#}
+                                margin-bottom: 1vh;
+                                "
+
+                                {#xtype="button" #}
+                                {#xdata-toggle="tooltip" #}
+                                {#xtitle="" #}
+                                {# onclick="cart.add('42', '1');" #}
+                                {#xdata-original-title="Add to Cart"#}
+
+                                action="add_item_to_cart"
+
+                                {%  for k3,v3 in item %}
+                                    aj_{{ k3 }} ="{{ v3 }}"
+                                {% endfor %}
+
+                                {#aj_name ="{{ item.head }}"#}
+                                {#aj_price ="{{ item.a_price }}"#}
+
+                                aj_kolvo ="1"
+                                {#aj_type_price="price2"#}
+
+                                {#aj_img ="{% if item.a_arrayimage is not empty %}{{ item.a_arrayimage }}{% endif %}"#}
+
+                                id="{{ item.id }}"
+                                s="{{ creatSecret( item.id ) }}"
+
+                                hide_this_on_click="da"
+                                show_id_defore_click="but_ok_{{ k }}"
+
+                                onclick="$(this).attr('aj_kolvo', $('#qi{{ k }}').val());"
+
+                                > 
+                                <span class="">
+                                    В&nbsp;корзину
+                                </span>
+                            </button>
+                            <a href="/{{ get.level }}/cart/" 
+                               class="addcart-ver2 ok btn btn-success" 
+                               id="but_ok_{{ k }}"
+                               style="
+                               margin-top:0;
+                               display:none;
+                               margin-bottom: 1vh;
+                               "
+                               > 
+                                В&nbsp;корзине
+                            </a>
+                        </div>
+
+                        {% if item.price2 is defined and item.price2 > 0 %}
+
+                            <div>
+                                <button 
+
+                                    class="addcart-ver2 shop__add_to_cart addToCart btn btn-sm btn-info2 norm" 
+                                    style="
+                                    width: auto; 
+                                    {#xdisplay: inline-block;#}
+                                    {#xmargin:0 auto;#}
+                                    margin-bottom: 1vh;
+                                    "
+
+                                    {#xtype="button" #}
+                                    {#xdata-toggle="tooltip" #}
+                                    {#xtitle="" #}
+                                    {# onclick="cart.add('42', '1');" #}
+                                    {#xdata-original-title="Add to Cart"#}
+
+                                    action="add_item_to_cart"
+
+                                    {%  for k3,v3 in item %}
+                                        
+                                        {% if k3 == 'price2' %}
+                                        aj_{{ k3 }} ="{{ v3|replace({' ': ''}) }}"
+                                        {% else %}
+                                        aj_{{ k3 }} ="{{ v3 }}"
+                                        {% endif %}
+                                        
+                                    {% endfor %}
+
+                                    {#aj_name ="{{ item.head }}"#}
+                                    {#aj_price ="{{ item.a_price }}"#}
+
+                                    aj_kolvo ="1"
+                                    aj_type_price="price2"
+
+                                    {#aj_img ="{% if item.a_arrayimage is not empty %}{{ item.a_arrayimage }}{% endif %}"#}
+
+                                    id="{{ k ~'z' }}"
+                                    s="{{ creatSecret( k ~'z' ) }}"
+
+                                    hide_this_on_click="da"
+                                    show_id_defore_click="but2_ok_{{ k }}"
+
+                                    onclick="$(this).attr('aj_kolvo', 1 );"
+
+                                    > 
+                                    <span class="">
+                                        Заказать заправку <span class="price_zapravka" >{{ item.price2|number_format(0,'','`') }}&nbsp;₽</span>
+                                    </span>
+                                </button>
+                                <a href="/{{ get.level }}/cart/" 
+                                   class="addcart-ver2 ok btn btn-success" 
+                                   id="but2_ok_{{ k }}"
+                                   style="
+                                   margin-top:0;
+                                   display:none;
+                                   margin-bottom: 1vh;
+                                   "
+                                   > 
+                                    Заправка в&nbsp;корзине
+                                </a>
+                            </div>
+
+                        {% endif %}
+
+                    </center>
+
+                </div>
+
+                {#</td>#}
+
+            </div>
+
+            {#</tr>#}
+
+        </div>
+
+        {% endspaceless %}

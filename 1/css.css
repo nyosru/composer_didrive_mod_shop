@@ -1,16 +1,25 @@
 
-.menu2_block{
-    xbackground-color: rgba(0,0,0,0.1);
+
+body .menu2_block{
+    /*xbackground-color: rgba(0,0,0,0.1);*/
     font-size: 14px;
+    position: sticky;
+    top: 90px;
 }
+
+
+
+
 .item_menu2{
     display: block;
     padding: 3px 5px;
-    background-color: rgba(102,102,255,0.1);
+    /*background-color: rgba(102,102,255,0.1);*/
+    background-color: rgba(0,0,0,0.05);
     margin-bottom: 1px;
 }
 .item_menu2:HOVER{
-    background-color: rgba(102,102,255,0.4);
+    /*background-color: rgba(102,102,255,0.4);*/
+    background-color: rgba(0,0,0,0.1);
 }
 .item_menu2.active{
     background-color: rgb(102,102,255);
@@ -19,43 +28,58 @@
 a.cart_item_delete{ color: rgba(255,0,0,0.2); }
 a.cart_item_delete:HOVER{ color: rgba(255,0,0,0.7); }
 
-
 .item_name_vitrin{
-    xmax-height: 64px; 
-    xoverflow-x: none;
+    /*xmax-height: 64px;*/ 
+    /*xoverflow-x: none;*/
     width: 100%;
-    line-height:19px;
+    line-height:1.0rem;
 }
-
-.item_name_vitrin_resize{
-    max-height: 64px;
+.item_name_vitrin > a{
+    /*font-size: 1.4rem;*/
+    font-size: 1.2rem;
+    /*line-height:1.7rem;*/
+}
+.item_name_vitrin > font{
+    display: block;
+    line-height:12px;
+    font-size: 12px;
+    padding-top: 5px;
+}
+.item_name_vitrin > font > a{
+    color: rgba(0,0,0,0.4);
+    display: block;
+}
+/*.item_name_vitrin_resize{
+    max-height: 72px;
     overflow: hidden;
 }
+*/
 
+.tr_item:HOVER font{
+    color: rgba(0,0,0,0.7);
+}
 .select_catalog_for_new_add a{ 
     display: block; 
     padding: 2px 5px 5px 5px;
     margin-bottom: 1px;
 }
-.select_catalog_for_new_add a:HOVER{ 
+.select_catalog_for_new_add a:HOVER{
     background-color: rgba(0,0,255,0.1);
 }
 .select_catalog_for_new_add a.active{
     background-color: rgba(0,0,255,0.1);
 } 
 
-
-
 .it_item{
-    
+
     border: 1px solid gray;
     padding: 5px;
     margin: 3px;
     border-radius: 4px;
     xfloat:left;
-    
+
     width: 220px;
-    
+
 }
 
 .it_item > div{
@@ -111,3 +135,44 @@ a.cart_item_delete:HOVER{ color: rgba(255,0,0,0.7); }
 
 .list2 .product-layout{ display: block; }
 .list2 .product-layout:nth-child(2n){ background-color: rgba(0,0,0,0.1); }
+
+.color-gray{ color: gray; }
+
+
+.cart-input-kolvo{ padding: 5px 0 5px 0; display:inline-block; width:40px; text-align:center; 
+                   /*xfloat:left;*/ 
+}
+.cart-btn-minus{ display:inline-block;
+                 /*xfloat:left;*/ 
+                 paddin: 8px; border-radius: 3px; }
+.cart-btn-plus{ display:inline-block; }
+
+
+
+.price_zapravka{
+    padding: 2px 5px;
+    background-color: gold;
+    color: rgb(50,50,50);
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.prod-price .price{
+    color: rgb(50,50,50);
+    /*font-weight: bold;*/
+    /*     padding-top: 20px;*/
+    line-height: 32px;
+    font-size: 20px;
+}
+
+.container-bw .row {
+    padding: 1em 1em;
+    xborder-bottom: 1px solid rgba(0,0,0,0.2);
+}
+/* .container-bw .row:nth-child(2n){
+    background-color: rgba(0,0,0,0.1);
+}*/
+
+.list-items{ margin-bottom: 3vh; }
+.list-items > div.row{ border-radius: 10px; }
+.list-items > div.row:HOVER{ box-shadow: 0 0 5px 5px rgba(0,0,0,0.2); }

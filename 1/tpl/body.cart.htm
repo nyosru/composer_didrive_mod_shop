@@ -1,24 +1,27 @@
 {% spaceless %}
 
+    {% set photos = shop__getPhotoArticuls()  %}
+
     {% set summa = 0 %}
 
-    <div class="container checkout-cart-form">
+    {#{{ pa(session,2) }}#}
+    {#{{ pa(photos,2) }}#}
 
-        {% if get.warn_order is defined %}
+    <div 
+        style="margin-top: 3vh;"
+        class="
+        container 
+        {#container-fluid #}
+        checkout-cart-form">
 
+        <form action="" method="post" >
             <div class="row">
-                <div class="col-md-12 col-sm-12 text-center">
-                    <h3 class="bg-warning" style="padding: 10px 20px;">{{ get.warn_order }}</h3>
-                </div>
-            </div>
-        {% else %}
 
+                <div class="col-12 {% if session.cart|length > 0 %}col-lg-9{% else %}{% endif %}" >
 
-            <form action="" method="post" >
+                    {% if session.cart|length > 0 %}
 
-                <div class="row">
-                    <div class="col-md-8 col-sm-12">
-                        <table class="table table- xshop_table">
+                        <table class="table table-striped xshop_table">
                             <thead>
                                 <tr style="position:sticky; top:0; background-color:white; border-bottom: 1px solid gray;" >
                                     <th class="product-thumbnail hidden-xs">&nbsp;</th>
@@ -26,21 +29,32 @@
                                     <th class="product-price text-center">Цена</th>
                                     <th class="quantity text-center">Кол-во</th>
                                     <th class="product-subtotal text-center hidden-xs">Сумма</th>
-                                    <th>&nbsp;</th>
+                                        {#<th>&nbsp;</th>#}
                                 </tr>
                             </thead>
                             <tbody>
 
                                 {%  for k,item in session.cart %}
 
-                                    {#{{ pa(item) }}#}
-                                    
+                                    {#{{ item.price2 }}#}
+
                                     {% include constant('dir_mods_mod_vers_tpl')~'body.cart.item.htm' %}
-                                    {% set summa = summa + ( ( items_in_cart[item.id]['a_price'] ? items_in_cart[item.id]['a_price'] :  0 ) * item.kolvo ) %}
-                                    {#                            {% if item.price is defined and item.price > 0 and item.kolvo is defined and item.kolvo > 0 %}
-                                                                    {% set summa = summa + ( item.price * item.kolvo ) %}
-                                                                {% endif %}
+
+                                    {% if item.type_price == 'price2' and item.price2 > 0 %}
+
+                                        {% set summa = summa + ( ( item.price2 ? item.price2|replace({' ': ''})|abs :  0 ) * item.kolvo ) %}
+                                    {% else %}
+                                        {% set summa = summa + ( ( item.price ? item.price :  0 ) * item.kolvo ) %}
+                                    {% endif %}
+
+                                    {#{{ pa(item) }}#}
+
+                                    {#                            
+                                    {% if item.price is defined and item.price > 0 and item.kolvo is defined and item.kolvo > 0 %}
+                                    {% set summa = summa + ( item.price * item.kolvo ) %}
+                                    {% endif %}
                                     #}
+
                                 {% endfor %}
 
                                 {% if 1 == 2 %}
@@ -81,87 +95,128 @@
                                 {% endif %}
                             </tbody>
                         </table>
-{#                            <br/>
+
+                    {% else %}
+                        <br/>
+                        <br/>
+                        <br/>
+                        <h2 class="alert alert-warning text-center " >
+                            Добавте товары в корзину для заказа
+                        </h2>
+
+
+                        <center>
+
+                            <a href="/010.catalog/" >перейти к выбору товаров в каталоге</a>
                             <br/>
-                            <center><a href="/show/" class="btn btn-default xbtn-continue-shopping"><span style="color:green;" class="fa fa-plus" ></span> Добавить товары</a></center>
-#}                            
-                    </div>
-                    <div class="col-md-4 col-sm-12">
-                        <div class="aside-shopping-cart-total">
-                            <h2>Заказ</h2>
-                            <ul>
-                                <li><span class="text">Итого: <span class="xcart-number" id="summa_all_show" >{{ summa|number_format(2,',','`') }}₽</span></span></li>
+                            <br/>
+                            или напишите в наши уютные месенджеры, отвечаем сразу, поможем собрать заказ
+                            <br/>
+                            <br/>
+                            <span class="icon_msg" >
+                                <a target="_blank" 
+                                   class="btn btn-lg btn-light border"
+                                   href="tg://resolve?domain=SC_Partner" 
+                                   ><img src="/vendor/didrive/base/img/icon/tele.png" /> {#Telegram#}</a>
+                                <a target="_blank" 
+                                   class="btn btn-lg btn-light border"
+                                   href="viber://chat?number=79044977399" 
+                                   ><img src="/vendor/didrive/base/img/icon/viber.png" /> {#Viber#}</a>
+                                <a target="_blank" 
+                                   class="btn btn-lg btn-light border"
+                                   href="https://api.whatsapp.com/send?phone=79044977399" 
+                                   ><img src="/vendor/didrive/base/img/icon/whatsapp.png" /> {#WhatsApp#}</a>
+                            </span>
 
-                                {#                        <li><span class="text">Shipping:</span>
-                                                            <div class="shipping">
-                                                                <form method="get" action="/search" role="search">
-                                                                    <input type="radio" name="gender" value="Flat" id="radio1" checked="checked">
-                                                                    <label for="radio1">FLAT RATE: $12.00</label>
-                                                                    <input type="radio" name="gender" value="Free" id="radio2">
-                                                                    <label for="radio2">Free Shipping</label>
-                                                                    <input type="radio" name="gender" value="Delivery" id="radio3">
-                                                                    <label for="radio3">FLAT RATE: $60.00</label>
-                                                                    <input type="radio" name="gender" value="Local-Delivery" id="radio4">
-                                                                    <label for="radio4">LOCAL DELIVERY: $5.00</label>
-                                                                </form>
-                                                            </div>
-                                                        </li>
-                                                        <li><span class="text calculate">Calculate shipping</span>
-                                                        </li>
-                                                        <li><span class="text">Total:</span><span class="cart-number big-total-number">$1,750.00</span></li>
-                                #}
+                        </center>
 
-                                <li>
-                                    <br/>
-                                    <br/>
-                                    <span class="text xcalculate">Контактные данные</span></li>
-                                <li><label>Как Вас зовут: 
-                                        <br/><input type="text" class="form-contol" 
-                                                    name="io"
-                                                    required=""
-                                                    /></label></li>
-                                <li><label>Телефон: 
-                                        <br/><input type="text" class="form-contol" 
-                                                    name="phone"
-                                                    required=""
-                                                    /></label></li>
+                    {% endif %}
 
-                            </ul>
-                            <div class="process">
-                                <button type="submit" class="btn-checkout">Отправить заказ</button>
+                    {#                            <br/>
+                                                <br/>
+                                                <center><a href="/show/" class="btn btn-default xbtn-continue-shopping"><span style="color:green;" class="fa fa-plus" ></span> Добавить товары</a></center>
+                    #}                            
+                </div>
+                <div class="col-12 col-lg-3">
+
+                    <div class="aside-shopping-cart-total" style="position: sticky; top: 60px;">
+
+                        {% if session.cart|length > 0 %}
+
+                            <div class="alert" style="background-color: rgba(0,0,0,0.05); " >
+
+                                <h2>Форма заказа</h2>
+
+
+                                <br/>
+
+                                {#<h3>Контактные данные</h3>#}
+                                <p>
+                                    <label>
+                                        <b>Как&nbsp;Вас&nbsp;зовут:</b><br/>
+                                        <input type="text" class="form-control" 
+                                               name="io"
+                                               required=""
+                                               />
+                                    </label>
+                                </p>
+                                <p>
+                                    <label>
+                                        <b>Телефон:</b>
+                                        <br/>
+                                        <input type="text" class="form-control" 
+                                               name="phone"
+                                               {#pattern="[\+7|8]\s?[\(|-]{0,1}9[0-9]{2}[\)|-]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"#}
+                                               required=""
+                                               />
+                                    </label>
+
+                                </p>
+
+                                <p><b>Сумма:</b>&nbsp;<span class="xcart-number" id="summa_all_show" >{{ summa|number_format(2,',','`') }}&nbsp;₽</span></p>
+
+                                <p><input type="checkbox" name="req" required="" /> Нажимая на кнопку "Отправить заказ", я даю согласие на <a href="/privacy/" target="_blank" >обработку персональных данных</a>.</p>
+
+                                <div class="process text-left" style="margin: 2vh 0; ">
+                                    <button type="submit" class="btn btn-info2 btn-checkout">Отправить заказ</button>
+                                </div>
+
                             </div>
+
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="shopping-cart-option">
+
+            {#<div class="button-option">#}
+            {# <a href="/show/" class="btn-continue-shopping active">Добавить ещё товары</a>#}
+            {#<a href="#" class="btn-clear">Очистить корзину</a>#}
+            {#</div>#}
+
+            {% if 1 == 2 %}
+                <div class="shopping-cart-coupon">
+                    <div class="row">
+                        <div class="col-md-5 col-sm-12">
+                            <form action="#" method="POST" class="coupon-form">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Coupon Code">
+                                    <span class="icon-coupon"></span>
+                                </div>
+                                <button type="submit" class="btn-submit"></button>
+                            </form>
+                        </div>
+                        <div class="col-md-7 col-sm-12">
+                            <a href="#" class="btn-update-cart">UPDATE CART</a>
                         </div>
                     </div>
                 </div>
-            </form>
-            <div class="shopping-cart-option">
+            {% endif %}
 
-                {#<div class="button-option">#}
-                   {# <a href="/show/" class="btn-continue-shopping active">Добавить ещё товары</a>#}
-                    {#<a href="#" class="btn-clear">Очистить корзину</a>#}
-                {#</div>#}
+        </div>
 
-                {% if 1 == 2 %}
-                    <div class="shopping-cart-coupon">
-                        <div class="row">
-                            <div class="col-md-5 col-sm-12">
-                                <form action="#" method="POST" class="coupon-form">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Coupon Code">
-                                        <span class="icon-coupon"></span>
-                                    </div>
-                                    <button type="submit" class="btn-submit"></button>
-                                </form>
-                            </div>
-                            <div class="col-md-7 col-sm-12">
-                                <a href="#" class="btn-update-cart">UPDATE CART</a>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-
-            </div>
-        {% endif %}
     </div>
 
 {% endspaceless %}
