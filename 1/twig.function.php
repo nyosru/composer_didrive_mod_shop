@@ -243,6 +243,7 @@ $function = new Twig_SimpleFunction('shop__getPhotoArticuls', function ( $dir = 
 });
 $twig->addFunction($function);
 
+
 $function = new Twig_SimpleFunction('shop__getItem', function ( $db, $id_item = null ) {
 
     if (empty($id_item))
@@ -257,7 +258,8 @@ $function = new Twig_SimpleFunction('shop__getItem', function ( $db, $id_item = 
         \Nyos\mod\items::$search['item_id'] = (int) $id_item;
         // \Nyos\mod\items::$sql_select_vars = ['item_id','head','value'];
         \Nyos\mod\items::$sql_select_vars = ['head', 'value'];
-        $items[0]['props'] = \Nyos\mod\items::get($db, \Nyos\api\API_1C::$mod_items_props);
+        // $items[0]['props'] = \Nyos\mod\items::get($db, \Nyos\api\API_1C::$mod_items_props);
+        $items[0]['props'] = \Nyos\mod\items::get($db, '010.catalog_items_props');
         // \f\pa($jj);
     }
 
